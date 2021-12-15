@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<!--suppress LanguageDetectionInspection, ThymeleafVariablesResolveInspection -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+      integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+      crossorigin="anonymous"
+    ></script>
+    <title>Poke-图鉴-详情</title>
+  </head>
+  <body>
+    <!-- 头部 -->
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-1">
+          <a th:href="@{/}">
+            <img th:src="@{/imgs/p1.jpg}" class="img-circle"/>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- 左边导航栏 -->
+    <div id="left" class="col-md-1">
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/user/latest-change}">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/topic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">快捷菜单</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/poke-dex}">宝可梦</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">招式</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">特性</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">我的</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/user/index}">我的主页</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">我的收藏</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/user/latest-change}">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/topic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+    </div>
+    <!-- 右侧内容 -->
+    <div id="right" class="col-md-11">
+      <!-- 右侧顶部导航栏 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation">
+          <a href="#"> 图鉴: 详情 </a>
+        </li>
+        <form th:action="@{/search}" method="get" class="navbar-form navbar-left pull-right">
+          <input id="pokename" name="pokename" type="text" class="form-control" placeholder="搜索Poke百科" />
+          <button type="submit" class="btn btn-default">
+            <span>搜索</span>
+          </button>
+        </form>
+      </ul>
+      <!-- 标题, 用于显示当前是哪个板块 -->
+      <div id="title" class="col-md-12">
+        <h1>图鉴: 详情</h1>
+      </div>
+      <!-- 具体内容 -->
+      <div class="row" id="right-content">
+        <div class="col-md-12">
+          <!-- 宝可梦, 地图的标签 -->
+          <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+              <a href="#pokemon" data-toggle="tab"> 宝可梦 </a>
+            </li>
+            <li><a href="#maps" data-toggle="tab"> 地图 </a></li>
+          </ul>
+          <!-- 标签页中的具体内容 -->
+          <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="pokemon">
+              <div class="col-md-3 col-md-offset-2">
+                <!-- Pokemon的粗略信息 -->
+                <div class="pokemon-detail">
+                  <p class="poke-name" th:text="${session.poke.pokeName}"></p>
+                  <img th:src="@{${session.poke.img300Src}}" alt="" />
+                  <p class="poke-dex-index">
+                    图鉴编号: <strong id="poke-dex-index" th:text="|. ${session.poke.dex}|"></strong>
+                  </p>
+                </div>
+              </div>
+              <!-- 右侧展示Pokemon详细信息 -->
+              <div class="col-md-6">
+                <!-- Pokemon的小图 -->
+                <div class="poke-img">
+                  <img th:src="@{${session.poke.img128Src}}" alt="" />
+                </div>
+                <!-- Pokemon的各项能力展示 -->
+                <div class="poke-info">
+                  <table class="info-table table" style="margin-top: 10px">
+                    <tr>
+                      <td colspan="2" style="background-color: yellow">
+                        基本数据
+                      </td>
+                    </tr>
+                    <!-- 属性: 一只Pokemon有且最多只有两个属性 -->
+                    <tr>
+                      <td>属性</td>
+                      <td>
+                        <span
+                          id="attribute"
+                          class="label label-primary"
+                          style="font-weight: bolder; font-size: 16px;"
+                          th:text="${session.poke.pokeAttributes.get(0).getAttribute()}"></span>
+                        <span
+                          id="attribute2"
+                          style="font-weight: bolder; font-size: 16px;"
+                          th:if="${session.poke.pokeAttributes.size() == 2}"
+                          class="label label-primary"
+                          th:text="${session.poke.pokeAttributes.get(1).getAttribute()}"></span>
+                      </td>
+                    </tr>
+                    <!-- 特性: 一只Pokemon有且最多只有两个特性 -->
+                    <tr>
+                      <td>特性</td>
+                      <td>
+                        <button
+                          id="feature1"
+                          type="button"
+                          class="btn btn-primary"
+                          data-container="body"
+                          data-toggle="feature"
+                          data-placement="left"
+                          th:data-content="${session.poke.getPokeFeatures().get(0).getDescri()}"
+                          th:text="${session.poke.getPokeFeatures().get(0).getFeature()}"
+                        ></button>
+                        <button
+                                id="feature2"
+                                type="button"
+                                class="btn btn-primary"
+                                data-container="body"
+                                data-toggle="feature"
+                                data-placement="right"
+                                th:if="${session.poke.getPokeFeatures().size() == 2}"
+                                th:data-content="${session.poke.getPokeFeatures().get(1).getDescri()}"
+                                th:text="${session.poke.getPokeFeatures().get(1).getFeature()}"></button>
+                      </td>
+                    </tr>
+                    <!-- 种族值 -->
+                    <tr>
+                      <td colspan="2" style="background-color: yellow">
+                        种族值
+                      </td>
+                    </tr>
+                    <!-- HP -->
+                    <tr>
+                      <td>生命值 (HP)</td>
+                      <td>
+                        <b id="hp-value" th:text="|${session.poke.hp}: |"></b>
+                        <span>
+                          <meter
+                            id="hp"
+                            class="poke-ability"
+                            min="0"
+                            max="150"
+                            low="19"
+                            high="100"
+                            optimum="101"
+                            th:value="${session.poke.hp}"
+                          ></meter>
+                        </span>
+                      </td>
+                    </tr>
+                    <!-- ATK  -->
+                    <tr>
+                      <td>攻击 (ATK)</td>
+                      <td>
+                        <b id="atk-value" th:text="|${session.poke.atk}: |"></b>
+                        <span>
+                          <meter
+                            id="atk"
+                            class="poke-ability"
+                            min="0"
+                            max="150"
+                            low="19"
+                            high="100"
+                            optimum="101"
+                            th:value="${session.poke.atk}"
+                          ></meter>
+                        </span>
+                      </td>
+                    </tr>
+                    <!-- DEF -->
+                    <tr>
+                      <td>防御 (DEF)</td>
+                      <td>
+                        <b id="def-value" th:text="|${session.poke.def}: |"></b>
+                        <span>
+                          <meter
+                            id="def"
+                            class="poke-ability"
+                            min="0"
+                            max="150"
+                            low="19"
+                            high="100"
+                            optimum="101"
+                            th:value="${session.poke.def}"
+                          ></meter>
+                        </span>
+                      </td>
+                    </tr>
+                    <!-- Sp.ATK -->
+                    <tr>
+                      <td>特攻 (Sp.ATK)</td>
+                      <td>
+                        <b id="spatk-value" th:text="|${session.poke.spatk}: |"></b>
+                        <span>
+                          <meter
+                            id="spatk"
+                            class="poke-ability"
+                            min="0"
+                            max="150"
+                            low="19"
+                            high="100"
+                            optimum="101"
+                            th:value="${session.poke.spatk}"
+                          ></meter>
+                        </span>
+                      </td>
+                    </tr>
+                    <!-- Sp.DEF -->
+                    <tr>
+                      <td>特防 (Sp.DEF)</td>
+                      <td>
+                        <b id="spdef-value" th:text="|${session.poke.spdef}: |"></b>
+                        <span>
+                          <meter
+                            id="spdef"
+                            class="poke-ability"
+                            min="0"
+                            max="150"
+                            low="19"
+                            high="100"
+                            optimum="101"
+                            th:value="${session.poke.spdef}"
+                          ></meter>
+                        </span>
+                      </td>
+                    </tr>
+                    <!-- Speed -->
+                    <tr>
+                      <td>速度 (Speed)</td>
+                      <td>
+                        <b id="speed-value" th:text="|${session.poke.speed}: |"></b>
+                        <span>
+                          <meter
+                            id="speed"
+                            class="poke-ability"
+                            min="0"
+                            max="150"
+                            low="19"
+                            high="100"
+                            optimum="101"
+                            th:value="${session.poke.speed}"
+                          ></meter>
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="maps">
+              <div class="col-md-9 col-md-offset-1">
+                <div class="game-map">
+                  <p class="title">游戏主系列地图</p>
+                </div>
+                <div class="maps">
+                  <div class="info">
+                    <img width="200px" height="180px" th:src="@{/imgs/maps/255px-关都地区_LPLE.png}" alt="" />
+                    <p>关都地区</p>
+                  </div>
+                  <div class="info">
+                    <img th:src="@{/imgs/maps/125px-七之岛_FRLG.png}" alt="" />
+                    <p>七之岛</p>
+                  </div>
+                  <div class="info">
+                    <img width="200px" height="180px" th:src="@{/imgs/maps/268px-城都地区_HGSS.png}" alt="" />
+                    <p>城都地区</p>
+                  </div>
+                  <div class="info">
+                    <img width="200px" height="180px" th:src="@{/imgs/maps/255px-丰缘地区_ORAS.png}" alt="" />
+                    <p>丰缘地区</p>
+                  </div>
+                  <div class="info">
+                    <img width="200px" height="180px" th:src="@{/imgs/maps/255px-神奥地区_Pt.png}" alt="" />
+                    <p>神奥地区</p>
+                  </div>
+                  <div class="info">
+                    <img width="200px" height="180px" th:src="@{/imgs/maps/合众地区.png}" alt="" />
+                    <p>合众地区</p>
+                  </div>
+                  <div class="info">
+                    <img width="200px" height="180px" th:src="@{/imgs/maps/275px-卡洛斯地区_XY.png}"  />
+                    <p>卡洛斯地区</p>
+                  </div>
+                  <div class="info">
+                    <img width="200px" height="180px" th:src="@{/imgs/maps/阿罗拉地区.png}" alt=""/>
+                    <p>阿罗拉地区</p>
+                  </div>
+                </div>
+                <div class="game-history">
+                  <div class="details">
+                    <div style="float: left" class="emm">
+                      <img th:src="@{/imgs/shenshou/阿尔宙斯.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>阿尔宙斯</h4>
+                      <p>
+                        在众说纷纭的神奥传说中提到整个宇宙, 包括宝可梦世界,
+                        皆由宝可梦<span class="spec">阿尔宙斯</span>创造的.
+                        在虚无的空虚中, 一个蛋诞生了, 然后孵化成阿尔宙斯.
+                        阿尔宙斯创造了<span class="spec">帝牙卢卡</span>,
+                        <span class="spec">帕鲁奇亚</span>和<span class="spec"
+                          >骑拉帝纳</span
+                        >, 并赋予了帝牙卢卡和帕鲁奇亚管理时间和空间的能力,
+                        而骑拉帝纳因其行为而被放逐到另一个次元
+                      </p>
+                      <p>
+                        然后, 在比世界形成的早期更早的时候, 阿尔宙斯创造了<span
+                          class="spec"
+                          >亚克诺姆</span
+                        >, <span class="spec">由克希</span>和<span class="spec"
+                          >艾姆利多</span
+                        >, 他们分别代表了人类和宝可梦身上都有的属性: 意志,
+                        知识和情感. 在<span class="spec">神奥地区</span>形成后,
+                        他们分别潜入到如今的<span class="spec">立志湖</span>,
+                        <span class="spec">睿智湖</span>和<span class="spec"
+                          >心齐湖</span
+                        >湖底, 它们被称为"湖中的传说的宝可梦"
+                      </p>
+                      <p>
+                        同也是在这些早期,
+                        <span class="spec">梦幻</span>诞生于这个星球上,
+                        它包含了每一只宝可梦的脱氧核苷酸, 也有许多科学家认为,
+                        梦幻是所有宝可梦们的祖先
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/超级裂空座.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>超级裂空座</h4>
+                      <p>
+                        紧接着在远古时代出现的是<span class="spec"
+                          >原始固拉多</span
+                        >, <span class="spec">原始盖欧卡</span>以及<span
+                          class="spec"
+                          >裂空座</span
+                        >. 据推测, 原始固拉多诞生于地球内部的岩浆中,
+                        原始盖欧卡则是在深海的水压中问世的,
+                        而裂空座是由臭氧层的矿物形成的
+                      </p>
+                      <p>
+                        另一种推论认为, 这三只宝可梦在海洋,
+                        陆地和臭氧层之前就已经存在, 而且是它们创造了, 岩浆,
+                        海洋以及臭氧层. 裂空座不断地在臭氧层中飞行,
+                        偶尔会到天空之柱休息.
+                        原始固拉多和原始盖欧卡分别创造了陆地和大海,
+                        一次偶然的相遇将这两只宝可梦变成了敌对双方,
+                        一场争夺宝可梦世界统治地位的冲突开始了.
+                        原始固拉多和原始盖欧卡也为争夺大自然的主导优势而战
+                      </p>
+                      <p>
+                        这些无休止的冲突一直持续到超级裂空座将它们平息,
+                        这之后原始固拉多和原始盖欧卡撤退到各自的洞穴,
+                        在洞穴力它们失去了原始形态后进入休眠期. 制造出的<span
+                          class="spec"
+                          >朱红色宝珠</span
+                        >和<span class="spec">靛蓝色宝珠</span>,
+                        用来防止固拉多和盖欧卡再次苏醒,
+                        当这两颗宝珠唤醒固拉多和盖欧卡后它们会原始回归.
+                        为了安全起见, 将这两颗宝珠存放在<span class="spec"
+                          >送火山</span
+                        >上.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/梦幻.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>梦幻</h4>
+                      <p>此时, 世界上已经有了很多梦幻, 它们的数量越来越多</p>
+                      <p>
+                        雷吉奇卡斯移动大陆板块形成不同的地区, 同时诸如<span
+                          class="spec"
+                          >天冠山</span
+                        >这类大型地形也在板块的运动中形成.
+                        神奥地区就是是围绕雷吉奇卡斯创建的,
+                        在这次激烈的地形动荡下形成了严酷山,
+                        而山上的岩浆里还诞生出了<span class="spec"
+                          >席多蓝恩</span
+                        >
+                      </p>
+                      <p>
+                        阿尔宙斯在进入永无休止的睡眠之前, 创造出了<span
+                          class="spec"
+                          >金刚宝珠</span
+                        >, <span class="spec">白玉宝珠</span>和<span
+                          class="spec"
+                          >白金宝珠</span
+                        >.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/雷吉奇卡斯.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>雷吉奇卡斯</h4>
+                      <p>
+                        许多年后, 史前时代开始, 第一只古代宝可梦诞生.
+                        科学家已经从<span class="spec">化石</span
+                        >和遗迹中发现了宝可梦的DNA,
+                        从而证明古代宝可梦曾经存在于这边土地上
+                      </p>
+                      <p>
+                        在这个阶段, 这个星球上的梦幻数量减少了,
+                        它们慢慢地将空间让给了其它宝可梦.
+                        此时一部分的生物从宝可梦中分裂出来, 进化成第一批人类
+                      </p>
+                      <p>
+                        在石器时代, 冰河时代以及铁器时代,
+                        诞生了传说中的三圣柱<span class="spec">雷克洛克</span>,
+                        <span class="spec">雷吉艾斯</span>和<span class="spec"
+                          >雷吉斯奇鲁</span
+                        >, 它们作为解开<span class="spec">切锋神殿</span>的<span
+                          class="spec"
+                          >雷吉奇卡斯</span
+                        >的钥匙被隐藏在<span class="spec">丰缘地区</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/AZ.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>AZ</h4>
+                      <p>
+                        <span class="spec">索尔迦雷欧</span>,
+                        <span class="spec">露奈雅拉</span>和<span class="spec"
+                          >奈克洛兹玛</span
+                        >出现在没有光明的早期时代的阿罗拉地区,
+                        照亮了奥罗拉地区之后,
+                        光辉大神奈克洛兹玛的光芒消失殆尽陷入长眠,
+                        索尔迦雷欧与露奈雅拉也消失于天际
+                      </p>
+                      <p>
+                        在这一时期, 鲤鱼王的种族发生突变. 它们成为最弱的宝可梦们
+                      </p>
+                      <p>
+                        距今3000年之前, AZ是卡洛斯地区的国王,
+                        由于他在一场战争失去了花叶蒂,
+                        伤心不已的他开始研究制作通过吸收宝可梦生命转换为能力的吸收盘及终极兵器
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/未知图腾.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>未知图腾</h4>
+                      <p>
+                        距今1500年之前, 最早的文字体系出现在阿露福遗迹,
+                        阿斯卡纳遗迹和随意遗迹中.
+                        考古学家目前还不确定几乎相同的<span class="spec"
+                          >未知图腾</span
+                        >是否先于或继承于已知的最早的文字,
+                        但人们认为它们之间有某种联系
+                      </p>
+                      <p>
+                        距今800年之前,
+                        <span class="spec">哲尔尼亚斯</span>和<span class="spec"
+                          >伊斐尔塔尔</span
+                        >分别吸收和释放了<span class="spec">卡洛斯地区</span
+                        >的生命能量
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/凤王.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>凤王</h4>
+                      <p>
+                        在近代史上, 距离现代700年之前, 在<span class="spec"
+                          >圆朱市</span
+                        >耸起两座九层的高塔, 分别是钟之塔和铃铛塔.
+                        这两座塔的目的是为了增进宝可梦和人们之间的友谊和希望.
+                        从塔顶上看到的景色十分的壮观. 位于西边的是钟之塔,
+                        它唤醒了宝可梦, 在东方是铃铛塔, 它唤醒了宝可梦,
+                        在东方是铃铛塔, 宝可梦在那里憩息.
+                        据说是当时一只巨大的银色宝可梦栖息在钟之塔上,
+                        而它的对应的彩虹色的<span class="spec">凤王</span
+                        >就在铃铛塔上憩息
+                      </p>
+                      <p>
+                        然而, 大约在游戏开始前150年之前, 一道闪电击中了钟之塔,
+                        引起的火灾少了三天三夜,
+                        洛奇亚和凤王毫发无伤地逃离飞向天空. 之后,
+                        一场突如其来的倾盆大雨扑灭了大火. 据游戏中的传说中提到,
+                        三只宝可梦在火灾中丧生, 但凤王将它们复活,
+                        那便是传说的三圣兽--- <span class="spec">雷公</span>,
+                        <span class="spec">炎帝</span>和<span class="spec"
+                          >水君</span
+                        >. 据民间传说所言, 雷公象征击中塔的闪电,
+                        炎帝象征着燃烧了三天三夜的熊熊烈火,
+                        水君则象征着扑灭火焰的大雨. 大约在这个时候,
+                        第一届宝可梦联盟的比赛拉开帷幕了.
+                      </p>
+                      <p>
+                        在20世纪90年代,
+                        秋叶原博士利用科学工程技术发明了第一只人造宝可梦<span
+                          class="spec"
+                          >多边兽</span
+                        >
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/超梦.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>超梦</h4>
+                      <p>
+                        在现代史上, 距今几年前,
+                        <span class="spec">超梦</span>从梦幻DNA中克隆诞生,
+                        后来逃脱并摧毁了<span class="spec">红莲岛</span
+                        >的宝可梦屋. 不久之后, 在红莲岛上火山喷发,
+                        导致许多建筑和地形被毁灭
+                      </p>
+                      <p>
+                        与此同时, <span class="spec">火箭队</span>在<span
+                          class="spec"
+                          >坂木老大</span
+                        >的领导下, 将其势力拓展到控制了围绕着<span class="spec"
+                          >关都地区</span
+                        >周边范围的多个地区, 知道<span class="spec">赤红</span
+                        >打败了坂木, 他才解散组织开始了终身的修行. 尽管如此,
+                        火箭队余党还在<span class="spec">七之岛</span>和<span
+                          class="spec"
+                          >城都地区</span
+                        >持续活动了一段时间. 在火箭队的行动结束后的某个时候,
+                        赤红爬上<span class="spec">白银山</span>开始等待
+                      </p>
+                      <p>
+                        与此同时, <span class="spec">熔岩队</span>和<span
+                          class="spec"
+                          >海洋队</span
+                        >的老大赤焰松和水梧桐唤醒了固拉多和盖欧卡,
+                        他们再度陷入纷争, 最后裂空座再次出现阻止了它们.
+                        固拉多和盖欧卡在这之后, 回到<span class="spec"
+                          >菲蕾地区</span
+                        >休息
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/骑拉帝纳.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>骑拉帝纳</h4>
+                      <p>
+                        在现代史时代, 由于整个地区发生的奇怪情况,
+                        神奥地区变得异常寒冷
+                      </p>
+                      <p>
+                        神奥地区的传说的那三只也被一个邪恶组织唤醒.
+                        银河队利用湖中的传说的宝可梦制造的红色链锁召唤帝牙卢卡,
+                        帕路奇亚和骑拉帝纳. 由于玩家的阻止, 它们的恶行被终止了.
+                      </p>
+                      <p>
+                        此时, 时空发生了裂开, 打开了通往毁坏的世界的裂缝.
+                        骑拉帝纳和银河队老大赤日一起逃到了它的次元中.
+                        毁坏的世界的入口关闭, 使神奥地区恢复正常
+                      </p>
+                    </div>
+                  </div>
+                  <div class="details">
+                    <div class="emm" style="float: left">
+                      <img th:src="@{/imgs/shenshou/酋雷姆.png}" alt="" />
+                    </div>
+                    <div>
+                      <h4>酋雷姆</h4>
+                      <p>
+                        几年后,
+                        等离子团出于自己的目的试图将宝可梦从人类抓捕中解放出来.
+                        莱希拉姆和捷克罗姆被等离子队和玩家唤醒了
+                      </p>
+                      <p>
+                        玩家站在两条龙的一边, 与N战斗, 以检验N的信念是否正确.
+                        在此之后, 玩家击败了魁奇斯, N和他的龙一起离开遥远的地方,
+                        而玩家保留着他们的龙.
+                      </p>
+                      <p>
+                        两年后, 归来的等离子团, 打算称霸合众.
+                        魁奇斯捕获酋雷姆想要冰封整个合众地区,
+                        分别与N的龙(捷克罗姆 或 莱希拉姆)
+                        融合成暗黑酋雷姆或焰白酋雷姆. 玩家击败了新的龙,
+                        最终等离子团的余党也被彻底击溃
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+
+    function onColor(attribute, ele) {
+      switch (attribute) {
+        case '草': ele.style.background='#00EE00'
+          break
+        case '水': ele.style.background='#0000CD'
+          break
+        case '火': ele.style.background='red'
+          break
+        case '钢': ele.style.background='#E0EEEE'
+          break
+        case '冰': ele.style.background='#7FFFD4'
+          break
+        case '龙': ele.style.background='#FF8C00'
+          break
+        case '恶': ele.style.background='#1C1C1C'
+          break
+        case '虫': ele.style.background='#7CFC00'
+          break
+        case '毒': ele.style.background='#9932CC'
+          break
+        case '一般': ele.style.background='#cbc4c4'
+          break
+        case '格斗': ele.style.background='#8B4513'
+          break
+        case '飞行': ele.style.background='#E0EEE0'
+          break
+        case '地面': ele.style.background='#8B4500'
+          break
+        case '岩石': ele.style.background='#CD6600'
+          break
+        case '幽灵': ele.style.background='#838B83'
+          break
+        case '妖精': ele.style.background='#FF69B4'
+          break
+        case '超能力': ele.style.background='#FF3030'
+          break
+      }
+    }
+
+    let attribute1_ele = document.getElementById("attribute")
+    let attribute1 = attribute1_ele.textContent
+    onColor(attribute1, attribute1_ele)
+    let attribute2_ele = document.getElementById("attribute2")
+    if (attribute2_ele) {
+      attribute2 = attribute2_ele.textContent
+      onColor(attribute2, attribute2_ele)
+    }
+    $(function (){
+      $("[data-toggle='feature']").popover();
+    });
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      /* 宽度包含内边距padding */
+      box-sizing: border-box;
+      background-color: #f4f4f4;
+    }
+    .top-header {
+      height: 80px;
+      line-height: 55px;
+      text-align: right;
+      font-size: 18px;
+      padding-right: 15px;
+      border-bottom: 3px gray solid;
+    }
+    .top-header .col-md-11 {
+      height: 80px;
+    }
+    .top-header .col-md-11 a {
+      width: 85px;
+      margin-left: 25px;
+    }
+    .top-header .col-md-11 a:last-child {
+      width: 110px;
+    }
+    #title {
+      margin-left: 15px;
+      border-bottom: 3px #000 solid;
+    }
+    #right-content {
+      margin-top: 105px;
+      margin-left: 15px;
+    }
+    .pokemon-detail {
+      margin-top: 40px;
+      padding-bottom: 15px;
+      border: 1px greenyellow solid;
+      width: 400px;
+      text-align: center;
+      background-color: greenyellow;
+    }
+    .pokemon-detail img {
+      text-align: center;
+    }
+    .poke-name,
+    .poke-dex-index,
+    strong {
+      margin-top: 10px;
+      background-color: greenyellow;
+      font-size: 16px;
+      font-weight: bolder;
+    }
+    .poke-img {
+      margin-top: 40px;
+      border: 1px greenyellow solid;
+      width: 140px;
+      height: 480px;
+      float: left;
+      line-height: 480px;
+    }
+    .poke-info {
+      margin-left: 143px;
+      border: 3px red solid;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .info-table p {
+      font-size: 18px;
+      font-weight: bolder;
+      background-color: greenyellow;
+    }
+    .table td {
+      font-size: 18px;
+    }
+    .poke-ability {
+      height: 20px;
+      border-radius: 0.5em;
+    }
+    .game-map {
+      margin-top: 40px;
+      border-radius: 0.5em;
+    }
+    .title {
+      padding-top: 15px;
+      padding-bottom: 10px;
+      text-align: center;
+      border-bottom: 1px #000 solid;
+      font-weight: bolder;
+      font-size: 20px;
+      background: #ccc;
+    }
+    .maps {
+      margin-top: 15px;
+      font-weight: bolder;
+      font-size: 16px;
+    }
+    .info {
+      float: left;
+      text-align: center;
+      width: 20%;
+      border: 1px #ccc solid;
+      padding-top: 15px;
+      margin-top: 1%;
+      margin-left: 4%;
+    }
+    .game-history {
+      margin-top: 40%;
+      margin-bottom: 10%;
+      height: 300px;
+    }
+    .game-history h3 {
+      font-weight: bolder;
+      border-bottom: 1px #000 solid;
+      padding-bottom: 10px;
+    }
+    .details {
+      width: 95%;
+      height: 400px;
+      margin: 30px auto;
+      display: inline-block;
+    }
+    .emm {
+      line-height: 350px;
+    }
+    .details div {
+      border: 1px #000 solid;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      height: 350px;
+    }
+    .details h4 {
+      padding-left: 3px;
+      padding-bottom: 3px;
+      font-weight: bolder;
+      font-size: 20px;
+      border-bottom: 1px #000 solid;
+    }
+    .details p {
+      text-indent: 2em;
+      text-align: center;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      font-size: 18px;
+      border-bottom: 1px #000 solid;
+    }
+    .details p:last-child {
+      border-bottom: none;
+    }
+    .spec {
+      color: royalblue;
+    }
+  </style>
+</html>

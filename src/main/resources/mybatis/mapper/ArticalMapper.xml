@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zugovo.mapper.ArticalMapper">
+
+    <!-- queryArticalsByTid()方法 -->
+    <select id="queryArticalsByTid" parameterType="int" resultType="Artical">
+        select * from artical where tid = #{tid}
+    </select>
+
+    <!-- saveArtical()方法 -->
+    <insert id="saveArtical" parameterType="Artical" useGeneratedKeys="true" keyProperty="id" >
+        insert into artical(uid, tid, title, content)
+        values(#{uid}, #{tid}, #{title}, #{content})
+    </insert>
+
+    <!-- updateArtical()方法 -->
+    <update id="updateArtical" parameterType="Artical">
+        update artical
+        <set>
+            <if test="uid != null"> uid = #{uid}, </if>
+            <if test="tid != null"> tid = #{tid}, </if>
+            <if test="title != null"> title = #{title}, </if>
+            <if test="publishTime != null"> publish_time = #{publishTime}, </if>
+            <if test="content != null"> content = #{content}, </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- dropArtical()方法 -->
+    <delete id="dropArtical" parameterType="int">
+        delete from artical where id = #{id}
+    </delete>
+
+    <!-- findArticalById()方法 -->
+    <select id="findArticalById" parameterType="int" resultType="Artical">
+        select * from artical where id = #{id}
+    </select>
+
+    <!-- queryAllByTid()方法 -->
+    <select id="queryAllByTid" parameterType="int" resultType="Artical" >
+        select * from artical where tid = #{tid}
+    </select>
+
+    <!-- queryArticalsByUid()方法 -->
+    <resultMap id="articalMap" type="Artical">
+        <result property="id" column="id" />
+        <result property="uid" column="uid" />
+        <result property="tid" column="tid" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="publishTime" column="publish_time" />
+        <association property="topic" >
+            <result property="name" column="name" />
+            <result property="pid" column="pid" />
+            <association property="plate">
+                <result property="pname" column="pname" />
+            </association>
+        </association>
+    </resultMap>
+    <select id="queryArticalsByUid" resultMap="articalMap">
+        select artical.*, user.*, plate.*, topic.*
+        from
+        artical JOIN user ON user.id = artical.uid
+        JOIN topic ON topic.id = artical.tid
+        JOIN plate ON plate.id = topic.pid
+        where user.id = #{id}
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+      integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+      crossorigin="anonymous"
+    ></script>
+    <title>Poke百科</title>
+  </head>
+
+  <body>
+    <!-- 头部 -->
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-1">
+          <a th:href="@{/index.html}">
+            <img th:src="@{/imgs/p1.jpg}" class="img-circle"/>
+          </a>
+        </div>
+        <div class="col-md-11">
+          <a th:href="@{/toLogin}">
+            <span id="login" class="label label-success"> 登录 </span>
+          </a>
+          <a th:href="@{/toRegister}">
+            <span id="register" class="label label-default">
+              为您创建账户?
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- 左边导航栏 -->
+    <div id="left" class="col-md-1">
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">快捷菜单</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/poke-dex}">宝可梦</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">招式</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">特性</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">我的</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/user/info}">我的主页</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">我的收藏</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+    </div>
+    <div id="right" class="col-md-11">
+      <!-- 右侧顶部导航栏 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="#">首页</a></li>
+        <li role="presentation"><a th:href="@{/user/toTopic}">讨论</a></li>
+        <form th:action="@{/search}" method="get" class="navbar-form navbar-left pull-right">
+          <input id="pokename" name="pokename" type="text" class="form-control" placeholder="搜索Poke百科" />
+          <button type="submit" class="btn btn-default">
+            <span>搜索</span>
+          </button>
+        </form>
+      </ul>
+      <!-- 标题, 用于显示当前是哪个板块 -->
+      <div id="title" class="col-md-12">
+        <h1>首页</h1>
+      </div>
+      <!-- 右侧显示具体内容 -->
+      <div class="row" style="margin-top: 105px; margin-left: 15px">
+        <!-- 内容左边区域 (游戏相关) -->
+        <div class="col-md-7">
+          <div class="first">
+            <div class="my_title" style="background: rgb(177, 236, 240)">
+              导航
+            </div>
+            <div class="first-content" style="height: 305px; text-align: center">
+              <div class="a" style="width: 15%; float: left">
+                <a th:href="@{/poke-dex}">
+                  <img th:src="@{/imgs/icons/icon1.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>宝可梦</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon2.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>招式</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon3.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>特性</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon4.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>道具</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon5.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>机理</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon6.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>活动赠送</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon7.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>游戏</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon8.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>卡牌</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon9.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>小工具</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon9.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>世界</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon10.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>事件</span>
+              </div>
+              <div class="a" style="width: 15%; float: left">
+                <a href="">
+                  <img th:src="@{/imgs/icons/icon11.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span>更多</span>
+              </div>
+            </div>
+          </div>
+          <div class="latest">
+            <div class="my_title" style="background: rgb(177, 236, 240)">
+              最新游戏
+            </div>
+            <div class="latest-content">
+              <div class="a">
+                <a href="">
+                  <img th:src="@{/imgs/jian_dun.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span><b>宝可梦 剑·盾</b></span>
+              </div>
+              <div class="a">
+                <a href="">
+                  <img th:src="@{/imgs/PokemonLetusGo.jpg}" alt="" class="img-rounded"/>
+                </a>
+                <br />
+                <span><b>宝可梦 Let's Go!</b></span>
+              </div>
+              <div class="a">
+                <a href="">
+                  <img th:src="@{/imgs/PokemonXunBao.jpg}" alt="" class="img-rounded"/>
+                </a>
+                <br />
+                <span><b>宝可梦探险寻宝</b></span>
+              </div>
+              <div class="a">
+                <a href="">
+                  <img th:src="@{/imgs/Pikachu.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span><b>名侦探皮卡丘</b></span>
+              </div>
+              <div class="a">
+                <a href="">
+                  <img th:src="@{/imgs/PokeRot.jpg}" alt="" class="img-rounded" />
+                </a>
+                <br />
+                <span><b>宝可拳</b></span>
+              </div>
+              <div class="a">
+                <a href="">
+                  <img th:src="@{/imgs/PokeSunMoon.jpg}" alt="" class="img-rounded"/>
+                </a>
+                <br />
+                <span><b>宝可梦 日·月</b></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 内容右边区域 (网站相关) -->
+        <div class="col-md-4 col-md-offset-1">
+          <!-- 网站公告 -->
+          <div class="second">
+            <div class="my_title" style="background: #ffddefff">网站公告</div>
+            <div class="gonggao">
+              <p style="margin-top: 20px;font-size: 1.3em;background-color: #fff7fbff;">
+                《精灵宝可梦》游戏系列最新作品, 《宝可梦 剑·盾》,
+                已经登陆任天堂<a href="https://www.nintendo.com">Switch</a>
+              </p>
+              <img
+                th:src="@{/imgs/200px-Pokemon_Game_Logo_-_Sword_Shield_CN.png}"
+                alt=""
+                class="pull-right"
+                style="background-color: #fff7fbff"
+              />
+            </div>
+          </div>
+          <!-- 关于我们 && 加入我们 -->
+          <div class="about-join">
+            <!-- 关于我们 -->
+            <div class="about">
+              <div class="my_title" style="background: #ffddefff">关于我们</div>
+              <div>
+                <p
+                  style="margin-top: 20px;font-size: 1.3em;background-color: #fff7fbff;">
+                  Poke百科是一个给玩家提供游戏内攻略以及一些游戏精灵属性的论坛,
+                  玩家之间可以在讨论区进行发帖交流,也可以对感兴趣的贴子加入收藏夹
+                  这里是有关宝可梦的百科全书，我们为了像大家一样的宝可梦爱好者们而聚集在一起，为了再现一个真实的宝可梦世界而努力
+                </p>
+              </div>
+            </div>
+            <!-- 加入我们 -->
+            <div class="join-us">
+              <div class="my_title" style="background: #ffddefff">加入我们</div>
+              <div style="background-color: #fff7fbff">
+                <p
+                  style="margin-top: 20px;font-size: 1.3em;background-color: #fff7fbff;">
+                  <b>Poke百科是成千上万个像您一样的用户构建的,</b>
+                  该论坛急需你提供帮助, 如有疑问, 请联系以下邮箱:
+                  <br />
+                  zuhudg@163.com (网易邮箱)
+                  <br />
+                  3050494918@qq.com (QQ邮箱)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      /* 宽度包含内边距padding */
+      box-sizing: border-box;
+      background-color: #f4f4f4;
+    }
+    .top-header {
+      height: 80px;
+      line-height: 55px;
+      text-align: right;
+      font-size: 18px;
+      padding-right: 15px;
+      border-bottom: 3px gray solid;
+    }
+    .top-header .col-md-11 {
+      height: 80px;
+    }
+    .top-header .col-md-11 a {
+      width: 85px;
+      margin-left: 25px;
+    }
+    .top-header .col-md-11 a:last-child {
+      width: 110px;
+    }
+    #left ul {
+      padding-top: 10px;
+    }
+    #right {
+      margin-bottom: 55px;
+    }
+    #right #title {
+      margin-left: 15px;
+      border-bottom: 3px #000 solid;
+    }
+    .first {
+      border: 2px rgb(103, 231, 240) solid;
+      border-radius: 0.5em;
+      height: 355px;
+    }
+    .first-content {
+      height: 305px;
+      text-align: center;
+      background-color: #fff7fbff;
+    }
+    .first-content .a {
+      margin: 30px 0;
+      background-color: #fff;
+    }
+    .first-content .a:nth-child(6n + 1) {
+      margin-left: 30px;
+    }
+    .latest {
+      margin-top: 15px;
+      border: 2px rgb(103, 231, 240) solid;
+      border-radius: 0.5em;
+      height: 550px;
+      text-align: center;
+    }
+    .latest-content {
+      height: 500px;
+      background-color: #fff7fbff;
+    }
+    .latest-content .a {
+      width: 27%;
+      float: left;
+      margin-top: 75px;
+      margin-right: 45px;
+    }
+    .my_title {
+      height: 45px;
+      line-height: 45px;
+      border-bottom: 1px #000 solid;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bolder;
+    }
+    .second {
+      height: 355px;
+      border: 2px rgb(241, 177, 188) solid;
+      border-radius: 0.5em;
+      background-color: #fff7fbff;
+    }
+    .about-join {
+      margin-top: 15px;
+    }
+    .about {
+      height: 280px;
+      border: 2px rgb(241, 177, 188) solid;
+      border-radius: 0.5em;
+      background-color: #fff7fbff;
+    }
+    .join-us {
+      margin-top: 15px;
+      height: 255px;
+      border: 2px rgb(241, 177, 188) solid;
+      border-radius: 0.5em;
+      background-color: #fff7fbff;
+    }
+  </style>
+</html>

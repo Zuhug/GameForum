@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zugovo.mapper.UserMapper">
+
+    <!-- queryAll()方法 -->
+    <select id="queryAll" resultType="User">
+        select * from user order by id desc
+    </select>
+
+    <!-- saveUser()方法 -->
+    <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyProperty="id" >
+        insert into user(username, img_url, sex, addr, tel, age, rid)
+        values(#{username}, #{imgUrl}, #{sex}, #{addr}, #{tel}, #{age}, #{rid})
+    </insert>
+
+    <!-- updateUser()方法 -->
+    <update id="updateUser" parameterType="User">
+        update user
+        <set>
+            <if test="username != null"> username = #{username}, </if>
+            <if test="imgUrl != null"> img_url = #{imgUrl}, </if>
+            <if test="sex != null"> sex = #{sex}, </if>
+            <if test="addr != null"> addr = #{addr}, </if>
+            <if test="tel != null"> tel = #{tel}, </if>
+            <if test="age != null"> age = #{age}, </if>
+            <if test="rid != null"> rid = #{rid}, </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- dropUser()方法 -->
+    <delete id="dropUser" parameterType="int">
+        delete from user where id = #{id}
+    </delete>
+
+    <!-- findUserById()方法 -->
+    <select id="findUserById" parameterType="int" resultType="User">
+        select * from user where id = #{id}
+    </select>
+
+    <!-- findNewUser()方法 -->
+    <select id="findNewUser" resultType="User">
+        select * from user order by id desc limit 1;
+    </select>
+
+    <!-- findAccountFromUser()方法 -->
+
+    <!-- findRoleFromUser()方法 -->
+
+    <!-- findArticalsFromUser()方法 -->
+
+</mapper>

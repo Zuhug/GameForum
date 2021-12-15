@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zugovo.mapper.PokeFeatureMapper">
+
+    <!-- savePokeFeature()方法 -->
+    <insert id="savePokeFeature" parameterType="PokeFeature" useGeneratedKeys="true" keyProperty="id" >
+        insert into poke_feature(feature, descri)
+        values(#{feature}, #{descri})
+    </insert>
+
+    <!-- updatePokeFeature()方法 -->
+    <update id="updatePokeFeature" parameterType="PokeFeature">
+        update poke_feature
+        <set>
+            <if test="feature != null"> feature = #{feature}, </if>
+            <if test="descri != null"> descri = #{descri}, </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- dropPokeFeature()方法 -->
+    <delete id="dropPokeFeature" parameterType="int">
+        delete from poke_feature where id = #{id}
+    </delete>
+
+    <!-- findPokeFeatureById()方法 -->
+    <select id="findPokeFeatureById" parameterType="int" resultType="PokeFeature">
+        select * from poke_feature where id = #{id}
+    </select>
+
+    <!-- queryPokeInfosFromPokeFeature()方法 -->
+
+</mapper>

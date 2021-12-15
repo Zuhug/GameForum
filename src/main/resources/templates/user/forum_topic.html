@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+      integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+      crossorigin="anonymous"
+    ></script>
+    <title>Poke百科</title>
+  </head>
+
+  <body>
+    <!-- 头部 -->
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-1">
+          <a th:href="@{/}">
+            <img th:src="@{/imgs/p1.jpg}" class="img-circle"/>
+          </a>
+        </div>
+        <div class="col-md-11" style="margin-top: 10px">
+          <div class="row">
+            <div class="col-md-1 col-md-offset-10" style="text-align: center">
+              <div style="float: left">
+                <img width="60px" height="60px" th:src="@{${session.loginAccount.user.imgUrl}}" alt="" class="img-circle">
+              </div>
+              <div class="info">
+                <a th:href="@{/user/info}">
+                  <p><b style="color: #0088cc; font-size: 20px" th:text="${session.loginAccount.user.username}"></b></p>
+                </a>
+                <p><b style="font-size: 14px" th:text="${session.loginAccount.email}"></b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 左边导航栏 -->
+    <div id="left" class="col-md-1">
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">快捷菜单</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/poke-dex}">宝可梦</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">招式</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">特性</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">我的</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/user/info}">我的主页</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">我的收藏</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+    </div>
+    <div id="right" class="col-md-11">
+      <div id="title" class="col-md-12">
+        <h1>专题论坛</h1>
+      </div>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1" style="margin-top: 50px">
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    口袋妖怪游戏专题
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <ul class="media-list">
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/1/1}" >太阳, 月亮交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/2/1}" >X, Y交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/3/1}" >黑, 白交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/4/1}">白金, 钻石, 珍珠交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/5/1}">绿宝石, 蓝宝石, 红宝石交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/6/1}" >心金, 魂银交流讨论区</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    对战研究
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <ul class="media-list">
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/7/1}" >太阳, 月亮交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/8/1}" >X, Y交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/9/1}" >黑, 白交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/10/1}" >白金, 钻石, 珍珠交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/11/1}" >绿宝石, 蓝宝石, 红宝石交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/12/1}">心金, 魂银交流讨论区</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                    特色讨论
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <ul class="media-list">
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/13/1}" >太阳, 月亮交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/14/1}" >X, Y交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/15/1}" >黑, 白交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/16/1}" >白金, 钻石, 珍珠交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/17/1}" >绿宝石, 蓝宝石, 红宝石交流讨论区</a>
+                    </li>
+                    <li class="media">
+                      <div class="media-left" style="float: left">
+                        <img th:src="@{/imgs/p1.jpg}" alt="" />
+                      </div>
+                      <a th:href="@{/user/topic/18/1}" >心金, 魂银交流讨论区</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      /* 宽度包含内边距padding */
+      box-sizing: border-box;
+      background-color: #f4f4f4;
+    }
+    .top-header {
+      height: 80px;
+      line-height: 55px;
+      text-align: right;
+      font-size: 18px;
+      padding-right: 15px;
+      border-bottom: 3px gray solid;
+    }
+    .info{
+      width: 150px;
+      line-height: 10px;
+      margin-left: 70px;
+      margin-top: 16px;
+      text-align: left;
+    }
+    .top-header .col-md-11 {
+      height: 80px;
+    }
+    .top-header .col-md-11 a {
+      width: 85px;
+      margin-left: 25px;
+    }
+    .top-header .col-md-11 a:last-child {
+      width: 110px;
+    }
+    #left ul {
+      padding-top: 10px;
+    }
+    #right {
+      margin-bottom: 55px;
+    }
+    #right #title {
+      margin-left: 15px;
+      border-bottom: 3px #000 solid;
+    }
+  </style>
+</html>

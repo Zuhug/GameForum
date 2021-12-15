@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zugovo.mapper.PokeAttributeMapper">
+
+    <!-- savePokeAttribute()方法 -->
+    <insert id="saveArtical" parameterType="PokeAttribute" useGeneratedKeys="true" keyProperty="id" >
+        insert into poke_attribute(attribute)
+        values(#{attribute})
+    </insert>
+
+    <!-- updatePokeAttribute()方法 -->
+    <update id="updatePokeAttribute" parameterType="PokeAttribute">
+        update poke_attribute
+        <set>
+            <if test="attribute != null"> attribute = #{attribute}, </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- dropPokeAttribute()方法 -->
+    <delete id="dropPokeAttribute" parameterType="int">
+        delete from poke_attribute where id = #{id}
+    </delete>
+
+    <!-- findPokeAttributeById()方法 -->
+    <select id="findPokeAttributeById" parameterType="int" resultType="PokeAttribute">
+        select * from poke_attribute where id = #{id}
+    </select>
+
+    <!-- 多表连接 -->
+    <!-- queryPokeInfosFromPokeAttribute()方法 -->
+
+</mapper>

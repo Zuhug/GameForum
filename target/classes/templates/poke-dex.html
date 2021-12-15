@@ -1,0 +1,3692 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+      integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Poke-dex</title>
+  </head>
+  <body>
+    <!-- 头部 -->
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-1">
+          <a th:href="@{/}"><img th:src="@{/imgs/p1.jpg}" class="img-circle"/></a>
+        </div>
+      </div>
+    </div>
+    <!-- 左边导航栏 -->
+    <div id="left" class="col-md-1">
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">快捷菜单</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/poke-dex}">宝可梦</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">招式</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">特性</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">我的</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/user/info}">我的主页</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">我的收藏</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+    </div>
+    <div id="right" class="col-md-11">
+      <!-- 右侧顶部导航栏 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="#">宝可梦: 图鉴</a></li>
+        <form th:action="@{/search}" method="get" class="navbar-form navbar-left pull-right">
+          <input id="pokename" name="pokename" type="text" class="form-control" placeholder="搜索Poke百科" />
+          <button type="submit" class="btn btn-default">
+            <span>搜索</span>
+          </button>
+        </form>
+      </ul>
+      <!-- 标题, 用于显示当前是哪个板块 -->
+      <div id="title" class="col-md-12">
+        <h1>宝可梦: 图鉴</h1>
+      </div>
+      <div class="row">
+        <div class="col-md-5" style="margin-right: 30px; margin-top: 45px">
+          <div style="border: 1px rgb(113, 206, 243) solid">
+            <div class="my_title" style="background: rgb(177, 236, 240)">
+              宝可梦
+            </div>
+            <div class="content">
+              <p style="font-size: 18px"><b>属性</b></p>
+              <p style="text-indent: 2em">
+                宝可梦根据它们的特征分别为<strong>18种属性</strong>,
+                有的宝可梦是一种属性, 有的宝可梦同时具备两种属性.
+                属性之间存在<strong>互相克制关系</strong>,
+                选择克制对方的宝可梦的属性, 可以在对战中取得优势!
+              </p>
+              <p style="font-size: 18px"><b>能力</b></p>
+              <p style="text-indent: 2em">
+                宝可梦的能力分为<strong
+                  >HP(生命值), ATK(攻击), DEF(防御), Sp.ATK(特攻), Sp.DEF(特防),
+                  Speed(速度)</strong
+                >这些能力在对战中会决定招式的威力与行动等....
+                每种个体值的最大值为31, 称作v, 有n个能力值达到这个数字,
+                这只精灵就是nv, (n取值为0~6的整数), 能力一旦确定,不能被更改,
+                可以通过给精灵佩戴相应锁值的物品(狗圈)来保证后代的能力值保持同一个数值
+              </p>
+              <p style="font-size: 18px"><b>特性</b></p>
+              <p style="text-indent: 2em">
+                <a href="#">特性</a>是宝可梦与生俱来的特殊能力, 在对战中,
+                不需要训练家的指令就能发挥效果
+              </p>
+              <p style="font-size: 18px"><b>图鉴</b></p>
+              <p style="text-indent: 2em">
+                <strong>宝可梦图鉴</strong>是记录遇到与捉到的宝可梦信息的装置
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div style="border: 1px rgb(113, 206, 243) solid; margin-top: 45px">
+            <div class="my_title" style="background: rgb(177, 236, 240)">
+              属性
+            </div>
+            <div class="content" style="margin-top: 15px">
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/common.png}" alt="" />
+                <p>一般</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/common.png}" alt="" />
+                <p>格斗</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/poison.png}" alt="" />
+                <p>飞行</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/poison.png}" alt="" />
+                <p>毒</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/ground.png}" alt="" />
+                <p>地面</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/rock.png}" alt="" />
+                <p>岩石</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/bug.png}" alt="" />
+                <p>虫</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/phantom.png}" alt="" />
+                <p>幽灵</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/steel.png}" alt="" />
+                <p>钢</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/fire.png}" alt="" />
+                <p>火</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/water.png}" alt="" />
+                <p>水</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/grass.png}" alt="" />
+                <p>草</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/electricity.png}" alt="" />
+                <p>电</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/super_power.png}" alt="" />
+                <p>超能力</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/ice.png}" alt="" />
+                <p>冰</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/dragon.png}" alt="" />
+                <p>龙</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/evil.png}" alt="" />
+                <p>恶</p>
+              </div>
+              <div class="poke-attribute">
+                <img th:src="@{/imgs/poke_attribute/goblin.png}" alt="" />
+                <p>妖精</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <!-- 第一世代 -->
+          <table style="margin-top: 45px">
+            <tbody>
+              <tr>
+                <td colspan="2" style="background-color: rgb(181, 222, 238)">
+                  <h3 style="background-color: rgb(181, 222, 238)">
+                    <b style="background-color: rgb(181, 222, 238)">第一世代</b>
+                  </h3>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-init"><b>初始宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/001.00.png}" alt="" />
+                    <a th:href="@{/detail/1}">001. 妙蛙种子</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/002.00.png}" alt="" />
+                    <a th:href="@{/detail/2}">002. 妙蛙草</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/003.00.png}" alt="" />
+                    <a th:href="@{/detail/3}">003. 妙蛙花</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/004.00.png}" alt="" />
+                    <a th:href="@{/detail/4}">004. 小火龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/005.00.png}" alt="" />
+                    <a th:href="@{/detail/5}">005. 火恐龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/006.00.png}" alt="" />
+                    <a th:href="@{/detail/6}">006. 喷火龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/007.00.png}" alt="" />
+                    <a th:href="@{/detail/7}">007. 杰尼龟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/008.00.png}" alt="" />
+                    <a th:href="@{/detail/8}">008. 卡尼龟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/009.00.png}" alt="" />
+                    <a th:href="@{/detail/9}">009. 水箭龟</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-common"><b>一般宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/010.00.png}" alt="" />
+                    <a th:href="@{/detail/10}">10. 绿毛虫</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/011.00.png}" alt="" />
+                    <a th:href="@{/detail/11}">11. 铁甲蛹</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/012.00.png}" alt="" />
+                    <a th:href="@{/detail/12}">012. 巴大蝶</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/013.00.png}" alt="" />
+                    <a th:href="@{/detail/13}">13. 独角虫</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/014.00.png}" alt="" />
+                    <a th:href="@{/detail/14}">014. 铁壳蛹</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/015.00.png}" alt="" />
+                    <a th:href="@{/detail/15}">015. 大针蜂</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/016.00.png}" alt="" />
+                    <a th:href="@{/detail/16}">016. 波波</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/017.00.png}" alt="" />
+                    <a th:href="@{/detail/17}">017. 比比鸟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/018.00.png}" alt="" />
+                    <a th:href="@{/detail/18}">018. 大比鸟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/019.00.png}" alt="" />
+                    <a th:href="@{/detail/19}">019. 小拉达</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/020.00.png}" alt="" />
+                    <a th:href="@{/detail/20}">020. 拉达</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/021.00.png}" alt="" />
+                    <a th:href="@{/detail/21}">021. 烈雀</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/022.00.png}" alt="" />
+                    <a th:href="@{/detail/22}">022. 大嘴雀</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/023.00.png}" alt="" />
+                    <a th:href="@{/detail/23}">023. 阿柏蛇</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/024.00.png}" alt="" />
+                    <a th:href="@{/detail/24}">024. 阿柏蛇</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/025.00.png}" alt="" />
+                    <a th:href="@{/detail/25}">025. 皮卡丘</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/026.00.png}" alt="" />
+                    <a th:href="@{/detail/26}">026. 雷丘</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/027.00.png}" alt="" />
+                    <a th:href="@{/detail/27}">027. 穿山鼠</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/028.00.png}" alt="" />
+                    <a th:href="@{/detail/28}">028. 穿山王</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/029.00.png}" alt="" />
+                    <a th:href="@{/detail/29}">029. 尼多兰</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/030.00.png}" alt="" />
+                    <a th:href="@{/detail/30}">030. 妮多娜</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/031.00.png}" alt="" />
+                    <a th:href="@{/detail/31}">031. 尼多后</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/032.00.png}" alt="" />
+                    <a th:href="@{/detail/32}">032. 尼多朗</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/033.00.png}" alt="" />
+                    <a th:href="@{/detail/33}">033. 尼多力诺</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/034.00.png}" alt="" />
+                    <a th:href="@{/detail/34}">034. 尼多王</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/035.00.png}" alt="" />
+                    <a th:href="@{/detail/35}">035. 皮皮</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/036.00.png}" alt="" />
+                    <a th:href="@{/detail/36}">036. 皮可西</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/037.00.png}" alt="" />
+                    <a th:href="@{/detail/37}">037. 六尾</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/038.00.png}" alt="" />
+                    <a th:href="@{/detail/38}">038. 九尾</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/039.00.png}" alt="" />
+                    <a th:href="@{/detail/39}">039. 胖丁</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/040.00.png}" alt="" />
+                    <a th:href="@{/detail/40}">040. 胖可丁</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/041.00.png}" alt="" />
+                    <a th:href="@{/detail/41}">041. 超音蝠</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/042.00.png}" alt="" />
+                    <a th:href="@{/detail/42}">042. 大嘴蝠</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/043.00.png}" alt="" />
+                    <a th:href="@{/detail/43}">043. 走路草</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/044.00.png}" alt="" />
+                    <a th:href="@{/detail/44}">044. 臭臭花</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/045.00.png}" alt="" />
+                    <a th:href="@{/detail/45}">045. 霸王花</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/046.00.png}" alt="" />
+                    <a th:href="@{/detail/46}">046. 派拉斯</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/047.00.png}" alt="" />
+                    <a th:href="@{/detail/47}">047. 派拉斯特</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/048.00.png}" alt="" />
+                    <a th:href="@{/detail/48}">048. 毛球</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/049.00.png}" alt="" />
+                    <a th:href="@{/detail/49}">049. 摩鲁蛾</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/050.00.png}" alt="" />
+                    <a th:href="@{/detail/50}">050. 地鼠</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/051.00.png}" alt="" />
+                    <a th:href="@{/detail/51}">051. 三地鼠</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/052.00.png}" alt="" />
+                    <a th:href="@{/detail/52}">052. 喵喵</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/053.00.png}" alt="" />
+                    <a th:href="@{/detail/53}">053. 猫老大</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/054.00.png}" alt="" />
+                    <a th:href="@{/detail/54}">054. 可达鸭</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/055.00.png}" alt="" />
+                    <a th:href="@{/detail/55}">055. 哥达鸭</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/056.00.png}" alt="" />
+                    <a th:href="@{/detail/56}">056. 猴怪</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/057.00.png}" alt="" />
+                    <a th:href="@{/detail/57}">057. 火暴猴</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/058.00.png}" alt="" />
+                    <a th:href="@{/detail/58}">058. 卡蒂狗</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/059.00.png}" alt="" />
+                    <a th:href="@{/detail/59}">059. 风速狗</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/060.00.png}" alt="" />
+                    <a th:href="@{/detail/60}">060. 蚊香蝌蚪</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/061.00.png}" alt="" />
+                    <a th:href="@{/detail/61}">061. 蚊香君</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/062.00.png}" alt="" />
+                    <a th:href="@{/detail/62}">062. 蚊香泳士</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/063.00.png}" alt="" />
+                    <a th:href="@{/detail/63}">063. 凯西</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/064.00.png}" alt="" />
+                    <a th:href="@{/detail/64}">064. 勇基拉</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/065.00.png}" alt="" />
+                    <a th:href="@{/detail/65}">065. 胡地</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/066.00.png}" alt="" />
+                    <a th:href="@{/detail/66}">066. 腕力</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/067.00.png}" alt="" />
+                    <a th:href="@{/detail/67}">067. 豪力</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/068.00.png}" alt="" />
+                    <a th:href="@{/detail/68}">068. 怪力</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/069.00.png}" alt="" />
+                    <a th:href="@{/detail/69}">069. 喇叭芽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/070.00.png}" alt="" />
+                    <a th:href="@{/detail/70}">070. 口呆花</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/071.00.png}" alt="" />
+                    <a th:href="@{/detail/71}">071. 大食花</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/072.00.png}" alt="" />
+                    <a th:href="@{/detail/72}">072. 玛瑙水母</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/073.00.png}" alt="" />
+                    <a th:href="@{/detail/73}">073. 毒刺水母</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/074.00.png}" alt="" />
+                    <a th:href="@{/detail/74}">074. 小攀石</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/075.00.png}" alt="" />
+                    <a th:href="@{/detail/75}">075. 隆隆石</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/076.00.png}" alt="" />
+                    <a th:href="@{/detail/76}">076. 隆隆石</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/077.00.png}" alt="" />
+                    <a th:href="@{/detail/77}">077. 小火马</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/078.00.png}" alt="" />
+                    <a th:href="@{/detail/78}">078. 烈焰马</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/079.00.png}" alt="" />
+                    <a th:href="@{/detail/79}">079. 呆呆兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/080.00.png}" alt="" />
+                    <a th:href="@{/detail/80}">080. 呆壳兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/081.00.png}" alt="" />
+                    <a th:href="@{/detail/81}">081. 小磁怪</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/082.00.png}" alt="" />
+                    <a th:href="@{/detail/82}">082. 三合一磁铁</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/083.00.png}" alt="" />
+                    <a th:href="@{/detail/83}">083. 大葱鸭</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/084.00.png}" alt="" />
+                    <a th:href="@{/detail/84}">084. 嘟嘟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/085.00.png}" alt="" />
+                    <a th:href="@{/detail/85}">085. 嘟嘟利</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/086.00.png}" alt="" />
+                    <a th:href="@{/detail/86}">086. 小海狮</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/087.00.png}" alt="" />
+                    <a th:href="@{/detail/87}">087. 白海狮 </a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/088.00.png}" alt="" />
+                    <a th:href="@{/detail/88}">088. 臭泥</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/089.00.png}" alt="" />
+                    <a th:href="@{/detail/89}">089. 臭臭泥</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/090.00.png}" alt="" />
+                    <a th:href="@{/detail/90}">090. 大舌贝</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/091.00.png}" alt="" />
+                    <a th:href="@{/detail/91}">091. 剩甲贝</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/092.00.png}" alt="" />
+                    <a th:href="@{/detail/92}">092. 鬼斯</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/093.00.png}" alt="" />
+                    <a th:href="@{/detail/93}">093. 鬼斯通</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/094.00.png}" alt="" />
+                    <a th:href="@{/detail/94}">094. 耿鬼</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/095.00.png}" alt="" />
+                    <a th:href="@{/detail/95}">095. 大岩蛇</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/096.00.png}" alt="" />
+                    <a th:href="@{/detail/96}">096. 催眠貘</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/097.00.png}" alt="" />
+                    <a th:href="@{/detail/97}">097. 引梦貘人</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/098.00.png}" alt="" />
+                    <a th:href="@{/detail/98}">098. 大钳蟹</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/099.00.png}" alt="" />
+                    <a th:href="@{/detail/99}">099. 巨钳蟹</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/100.00.png}" alt="" />
+                    <a th:href="@{/detail/100}">100. 霹雳电球</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/101.00.png}" alt="" />
+                    <a th:href="@{/detail/101}">101. 顽皮雷弹</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/102.00.png}" alt="" />
+                    <a th:href="@{/detail/102}">102. 蛋蛋</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/103.00.png}" alt="" />
+                    <a th:href="@{/detail/103}">103. 椰蛋树</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/104.00.png}" alt="" />
+                    <a th:href="@{/detail/104}">104. 卡拉卡拉</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/105.00.png}" alt="" />
+                    <a th:href="@{/detail/105}">105. 嘎啦嘎啦</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/106.00.png}" alt="" />
+                    <a th:href="@{/detail/106}">106. 飞腿郎</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/107.00.png}" alt="" />
+                    <a th:href="@{/detail/107}">107. 快拳郎</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/108.00.png}" alt="" />
+                    <a th:href="@{/detail/108}">108. 大舌头</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/109.00.png}" alt="" />
+                    <a th:href="@{/detail/109}">109. 瓦格弹</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/110.00.png}" alt="" />
+                    <a th:href="@{/detail/110}">110. 双弹瓦斯</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/111.00.png}" alt="" />
+                    <a th:href="@{/detail/111}">111. 独角犀牛</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/112.00.png}" alt="" />
+                    <a th:href="@{/detail/112}">112. 钻角犀兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/113.00.png}" alt="" />
+                    <a th:href="@{/detail/113}">113. 吉利蛋</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/114.00.png}" alt="" />
+                    <a th:href="@{/detail/114}">114. 蔓藤怪</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/115.00.png}" alt="" />
+                    <a th:href="@{/detail/115}">115. 袋兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/116.00.png}" alt="" />
+                    <a th:href="@{/detail/116}">116. 墨海马</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/117.00.png}" alt="" />
+                    <a th:href="@{/detail/117}">117. 海刺龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/118.00.png}" alt="" />
+                    <a th:href="@{/detail/118}">118. 角金鱼</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/119.00.png}" alt="" />
+                    <a th:href="@{/detail/119}">119. 金鱼王</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/120.00.png}" alt="" />
+                    <a th:href="@{/detail/120}">120. 海星星</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/121.00.png}" alt="" />
+                    <a th:href="@{/detail/121}">121. 宝石海星</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/122.00.png}" alt="" />
+                    <a th:href="@{/detail/122}">122. 磨墙人偶</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/123.00.png}" alt="" />
+                    <a th:href="@{/detail/123}">123. 飞天螳螂</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/124.00.png}" alt="" />
+                    <a th:href="@{/detail/124}">124. 迷唇姐</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/125.00.png}" alt="" />
+                    <a th:href="@{/detail/125}">125. 电击兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/126.00.png}" alt="" />
+                    <a th:href="@{/detail/126}">126. 鸭嘴火兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/127.00.png}" alt="" />
+                    <a th:href="@{/detail/127}">127. 凯罗斯</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/128.00.png}" alt="" />
+                    <a th:href="@{/detail/128}">128. 肯泰罗</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/129.00.png}" alt="" />
+                    <a th:href="@{/detail/129}">129. 鲤鱼王</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/130.00.png}" alt="" />
+                    <a th:href="@{/detail/130}">130. 暴鲤龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/131.00.png}" alt="" />
+                    <a th:href="@{/detail/131}">131. 拉普拉斯</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/132.00.png}" alt="" />
+                    <a th:href="@{/detail/132}">132. 百变怪</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/133.00.png}" alt="" />
+                    <a th:href="@{/detail/133}">133. 伊布</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/134.00.png}" alt="" />
+                    <a th:href="@{/detail/134}">134. 水伊布</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/135.00.png}" alt="" />
+                    <a th:href="@{/detail/135}">135. 雷伊布</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/136.00.png}" alt="" />
+                    <a th:href="@{/detail/136}">136. 火伊布</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/137.00.png}" alt="" />
+                    <a th:href="@{/detail/137}">137. 多边兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/138.00.png}" alt="" />
+                    <a th:href="@{/detail/138}">138. 菊石兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/139.00.png}" alt="" />
+                    <a th:href="@{/detail/139}">139. 多刺菊石兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/140.00.png}" alt="" />
+                    <a th:href="@{/detail/140}">140. 化石盔</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/141.00.png}" alt="" />
+                    <a th:href="@{/detail/141}">141. 镰刀盔</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/142.00.png}" alt="" />
+                    <a th:href="@{/detail/142}">142. 化石翼龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/143.00.png}" alt="" />
+                    <a th:href="@{/detail/143}">143. 卡比兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/147.00.png}" alt="" />
+                    <a th:href="@{/detail/147}">147. 迷你龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/148.00.png}" alt="" />
+                    <a th:href="@{/detail/148}">148. 哈克龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/149.00.png}" alt="" />
+                    <a th:href="@{/detail/149}">149. 快龙</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-legend"><b>传说宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/144.00.png}" alt="" />
+                    <a th:href="@{/detail/144}">144. 急冻鸟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/145.00.png}" alt="" />
+                    <a th:href="@{/detail/145}">145. 闪电鸟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/146.00.png}" alt="" />
+                    <a th:href="@{/detail/146}">146. 火焰鸟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/150.00.png}" alt="" />
+                    <a th:href="@{/detail/150}">150. 超梦</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/first/151.00.png}" alt="" />
+                    <a th:href="@{/detail/151}">151. 梦幻</a>
+                  </li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- 第三世代 -->
+          <table style="margin-top: 45px">
+            <tbody>
+              <tr>
+                <td colspan="2" style="background-color: greenyellow">
+                  <h3 style="background-color: greenyellow">
+                    <b style="background-color: greenyellow">第三世代</b>
+                  </h3>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-init"><b>初始宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/252.00.png}" alt="" />
+                    <a href="">252. 木守宫</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/253.00.png}" alt="" />
+                    <a href="">253. 森林蜥蜴</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/254.00.png}" alt="" />
+                    <a href="">254. 蜥锡王</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/255.00.png}" alt="" />
+                    <a href="">255. 火椎鸡</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/256.00.png}" alt="" />
+                    <a href="">256. 力壮超</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/257.00.png}" alt="" />
+                    <a href="">257. 火焰鸟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/258.00.png}" alt="" />
+                    <a href="">258. 水跃鱼</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/259.00.png}" alt="" />
+                    <a href="">259. 沼跃鱼</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/260.00.png}" alt="" />
+                    <a href="">260. 巨沼怪</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-common"><b>一般宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/261.00.png}" alt="" />
+                    <a href="">261. 土狼犬</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/262.00.png}" alt="" />
+                    <a href=""> 262. 大狼犬</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/263.00.png}" alt="" />
+                    <a href="">263. 蛇纹熊</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/264.00.png}" alt="" />
+                    <a href="">264. 直冲熊</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/265.00.png}" alt="" />
+                    <a href="">265. 刺尾虫</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/266.00.png}" alt="" />
+                    <a href="">266. 甲壳茧</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/267.00.png}" alt="" />
+                    <a href="">267. 狩猎凤蝶蛛</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/268.00.png}" alt="" />
+                    <a href="">268. 盾甲茧</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/269.00.png}" alt="" />
+                    <a href="">269. 毒粉蛾</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/270.00.png}" alt="" />
+                    <a href="">270. 莲叶童子</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/271.00.png}" alt="" />
+                    <a href="">271. 莲帽小童</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/272.00.png}" alt="" />
+                    <a href="">272. 乐天河童</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/273.00.png}" alt="" />
+                    <a href="">273. 像实果</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/274.00.png}" alt="" />
+                    <a href="">274. 长鼻叶</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/275.00.png}" alt="" />
+                    <a href="">275. 狡猾天狗</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/276.00.png}" alt="" />
+                    <a href="">276. 傲骨燕</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/277.00.png}" alt="" />
+                    <a href="">277. 大王燕</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/278.00.png}" alt="" />
+                    <a href="">278. 长翅鸥</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/279.00.png}" alt="" />
+                    <a href="">279. 大嘴鸥</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/280.00.png}" alt="" />
+                    <a href="">280. 拉鲁拉丝</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/281.00.png}" alt="" />
+                    <a href="">281. 奇鲁莉安</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/282.00.png}" alt="" />
+                    <a href="">282. 沙亲朵</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/283.00.png}" alt="" />
+                    <a href="">283. 溜溜糖球</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/284.00.png}" alt="" />
+                    <a href="">284. 雨翅蛾</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/285.00.png}" alt="" />
+                    <a href="">285. 蘑蘑菇</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/286.00.png}" alt="" />
+                    <a href="">286. 斗笠菇</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/287.00.png}" alt="" />
+                    <a href="">287. 懒人翁</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/288.00.png}" alt="" />
+                    <a href="">288. 过动猿</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/289.00.png}" alt="" />
+                    <a href="">289. 请假王</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/290.00.png}" alt="" />
+                    <a href="">290. 土居忍士</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/291.00.png}" alt="" />
+                    <a href="">291. 铁面忍者</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/292.00.png}" alt="" />
+                    <a href="">292. 脱壳忍者</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/293.00.png}" alt="" />
+                    <a href="">293. 咕妞妞</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/294.00.png}" alt="" />
+                    <a href="">294. 吼燥弹</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/295.00.png}" alt="" />
+                    <a href="">295. 燥音怪</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/296.00.png}" alt="" />
+                    <a href="">296. 幕下力土</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/297.00.png}" alt="" />
+                    <a href="">297. 铁掌力士</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/298.00.png}" alt="" />
+                    <a href="">298. 露力丽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/299.00.png}" alt="" />
+                    <a href="">299. 朝北鼻</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/300.00.png}" alt="" />
+                    <a href="">300. 向尾嘴</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/301.00.png}" alt="" />
+                    <a href="">301. 优雅猫</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/302.00.png}" alt="" />
+                    <a href="">302. 勾魂眼</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/303.00.png}" alt="" />
+                    <a href="">303. 大概娃</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/304.00.png}" alt="" />
+                    <a href="">304. 可可多拉</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/305.00.png}" alt="" />
+                    <a href="">305. 可多拉</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/306.00.png}" alt="" />
+                    <a href="">306. 波土可多拉</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/307.00.png}" alt="" />
+                    <a href="">307. 玛沙服</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/308.00.png}" alt="" />
+                    <a href="">308. 恰雷姆</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/309.00.png}" alt="" />
+                    <a href="">309. 落雷兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/310.00.png}" alt="" />
+                    <a href="">310. 雷电兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/311.00.png}" alt="" />
+                    <a href="">311. 正电拍拍</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/312.00.png}" alt="" />
+                    <a href="">312. 负电掐拍</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/313.00.png}" alt="" />
+                    <a href="">313. 电董虫</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/314.00.png}" alt="" />
+                    <a href="">314. 甜謝量</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/315.00.png}" alt="" />
+                    <a href="">315. 毒蔷藏</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/316.00.png}" alt="" />
+                    <a href="">316. 溶食兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/317.00.png}" alt="" />
+                    <a href="">317. 吞食兽</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/318.00.png}" alt="" />
+                    <a href="">318. 利牙鱼</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/319.00.png}" alt="" />
+                    <a href="">319. 巨牙估</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/320.00.png}" alt="" />
+                    <a href="">320. 吼吼鲸</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/321.00.png}" alt="" />
+                    <a href="">321. 吼象王</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/322.00.png}" alt="" />
+                    <a href="">322. 果火路</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/323.00.png}" alt="" />
+                    <a href="">323. 喷火验</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/324.00.png}" alt="" />
+                    <a href="">324. 煤炭龟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/325.00.png}" alt="" />
+                    <a href="">325. 跳跳猪</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/326.00.png}" alt="" />
+                    <a href="">326. 噗噗猪</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/327.00.png}" alt="" />
+                    <a href="">327. 晃晃斑</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/328.00.png}" alt="" />
+                    <a href="">328. 大颚蚁</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/329.00.png}" alt="" />
+                    <a href="">329. 超音波幼虫</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/330.00.png}" alt="" />
+                    <a href="">330. 沙漠蜻蜓</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/331.00.png}" alt="" />
+                    <a href="">331. 刺球仙人掌</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/332.00.png}" alt="" />
+                    <a href="">332. 梦歌仙人掌</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/333.00.png}" alt="" />
+                    <a href="">333. 青绵鸟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/334.00.png}" alt="" />
+                    <a href="">334. 七夕青鸟</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/335.00.png}" alt="" />
+                    <a href="">335. 猫融斩</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/336.00.png}" alt="" />
+                    <a href="">336. 饭匙蛇</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/337.00.png}" alt="" />
+                    <a href="">337. 月石</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/338.00.png}" alt="" />
+                    <a href="">338. 太阳岩</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/339.00.png}" alt="" />
+                    <a href="">339. 泥泥鳅</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/340.00.png}" alt="" />
+                    <a href="">340. 餘鱼王</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/341.00.png}" alt="" />
+                    <a href="">341. 龙虾小兵</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/342.00.png}" alt="" />
+                    <a href="">342. 铁螯龙虾</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/343.00.png}" alt="" />
+                    <a href="">343. 天秤偶</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/344.00.png}" alt="" />
+                    <a href="">344. 念力土偶</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/345.00.png}" alt="" />
+                    <a href="">345. 触手百合</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/346.00.png}" alt="" />
+                    <a href="">346. 按盟百合</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/347.00.png}" alt="" />
+                    <a href="">347. 太古羽虫</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/348.00.png}" alt="" />
+                    <a href="">348. 太古盔甲</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/349.00.png}" alt="" />
+                    <a href="">349. 丑丑鱼</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/350.00.png}" alt="" />
+                    <a href="">350. 美纳斯</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/351.00.png}" alt="" />
+                    <a href="">351. 飘浮泡泡</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/352.00.png}" alt="" />
+                    <a href="">352. 变隐龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/353.00.png}" alt="" />
+                    <a href="">353. 把影娃雄</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/354.00.png}" alt="" />
+                    <a href="">354. 诅咒娃娃</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/355.00.png}" alt="" />
+                    <a href="">355. 夜巡灵</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/356.00.png}" alt="" />
+                    <a href="">356. 彷徨夜灵</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/357.00.png}" alt="" />
+                    <a href="">357. 热带龙</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/358.00.png}" alt="" />
+                    <a href="">358. 风铃铃</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/359.00.png}" alt="" />
+                    <a href="">359. 阿物校备</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/360.00.png}" alt="" />
+                    <a href="">360. 小果然</a>
+                  </li>
+                  <li>
+                    <img th:src="@{/imgs/tujian/three/361.00.png}" alt="" />
+                    <a href="">361. 雪童子</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/362.00.png" alt="" />
+                    <a href="">362. 冰鬼护</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/363.00.png" alt="" />
+                    <a href="">363. 海豹球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/364.00.png" alt="" />
+                    <a href="">364. 海魔狮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/365.00.png" alt="" />
+                    <a href="">365. 帝牙海狮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/366.00.png" alt="" />
+                    <a href="">366. 珍珠贝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/367.00.png" alt="" />
+                    <a href="">367. 猫暖鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/368.00.png" alt="" />
+                    <a href="">368. 樱花鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/369.00.png" alt="" />
+                    <a href="">369. 古空棘鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/370.00.png" alt="" />
+                    <a href="">370. 暑心鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/371.00.png" alt="" />
+                    <a href="">371. 宝贝龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/372.00.png" alt="" />
+                    <a href="">372. 甲壳龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/373.00.png" alt="" />
+                    <a href="">373. 塞飞龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/374.00.png" alt="" />
+                    <a href="">374. 铁哑铃</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/375.00.png" alt="" />
+                    <a href="">375. 金属怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/276.00.png" alt="" />
+                    <a href="">376. 巨金怪</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-legend"><b>传说宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/three/377.00.png" alt="" />
+                    <a href="">377. 番音漂完</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/378.00.png" alt="" />
+                    <a href="">378. 需吉艾斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/379.00.png" alt="" />
+                    <a href=""> 379. 偏吉斯奇魯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/380.00.png" alt="" />
+                    <a href="">380. 拉蒂亚断</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/381.00.png" alt="" />
+                    <a href="">381. 拉帝欧断王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/382.00.png" alt="" />
+                    <a href="">382. 盖欧卡</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/383.00.png" alt="" />
+                    <a href="">383. 固拉多</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/384.00.png" alt="" />
+                    <a href="">384. 烈空坐</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/385.00.png" alt="" />
+                    <a href="">385. 基拉折</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/three/386.00.png" alt="" />
+                    <a href="">386. 代欧奇精斯</a>
+                  </li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- 第五世代 -->
+          <table style="margin-top: 45px">
+            <tbody>
+              <tr>
+                <td colspan="2" style="background-color: rgb(233, 51, 209)">
+                  <h3 style="background-color: rgb(233, 51, 209)">
+                    <b style="background-color: rgb(233, 51, 209)">第五世代</b>
+                  </h3>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-init"><b>初始宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/five/494.00.png" alt="" />
+                    <a href="">494.比克提尼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/495.00.png" alt="" />
+                    <a href="">495.藤藤蛇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/496.00.png" alt="" />
+                    <a href="">496.青藤蛇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/497.00.png" alt="" />
+                    <a href="">497.君主蛇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/498.00.png" alt="" />
+                    <a href="">498.睡暖猪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/499.00.png" alt="" />
+                    <a href="">499.炒妙猪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/500.00.png" alt="" />
+                    <a href="">500.炎武王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/501.00.png" alt="" />
+                    <a href="">501.水水獭</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/502.00.png" alt="" />
+                    <a href="">502.双刃丸</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/503.00.png" alt="" />
+                    <a href="">503.大剑鬼</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-common"><b>一般宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/five/504.00.png" alt="" />
+                    <a href="">504.探探鼠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/505.00.png" alt="" />
+                    <a href="">505.步聘鼠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/506.00.png" alt="" />
+                    <a href="">506.小约克</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/507.00.png" alt="" />
+                    <a href="">507.哈约克</a>
+                  </li>
+
+                  <li>
+                    <img src="./imgs/tujian/five/508.00.png" alt="" />
+                    <a href="">508.长毛狗</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/509.00.png" alt="" />
+                    <a href="">509.扒手猫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/510.00.png" alt="" />
+                    <a href="">510.配豹</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/511.00.png" alt="" />
+                    <a href="">511.花椰猴</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/512.00.png" alt="" />
+                    <a href="">512.花椰猿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/513.00.png" alt="" />
+                    <a href="">513.煤香猴</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/514.00.png" alt="" />
+                    <a href="">514.爆香猿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/515.00.png" alt="" />
+                    <a href="">515.冷水猴</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/516.00.png" alt="" />
+                    <a href="">516.冷水猿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/517.00.png" alt="" />
+                    <a href="">517.俞梦梦</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/518.00.png" alt="" />
+                    <a href="">518.梦梦蚀</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/519.00.png" alt="" />
+                    <a href="">519.豆豆鸽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/520.00.png" alt="" />
+                    <a href="">520.波波鸽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/521.00.png" alt="" />
+                    <a href="">521. 木守宫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/522.00.png" alt="" />
+                    <a href="">522.斑斑马</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/523.00.png" alt="" />
+                    <a href="">523.雷电斑马</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/524.00.png" alt="" />
+                    <a href="">524.石丸子</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/525.00.png" alt="" />
+                    <a href="">525.地幔岩</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/526.00.png" alt="" />
+                    <a href="">526.庞岩怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/527.00.png" alt="" />
+                    <a href="">527.途滨蝙螨</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/528.00.png" alt="" />
+                    <a href="">528.心蝙蝠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/529.00.png" alt="" />
+                    <a href="">529.螺钉地鼠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/530.00.png" alt="" />
+                    <a href="">530.龙头地鼠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/531.00.png" alt="" />
+                    <a href="">531.差不多娃娃</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/532.00.png" alt="" />
+                    <a href="">533.铁骨土人</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/533.00.png" alt="" />
+                    <a href="">534. 修建老匠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/534.00.png" alt="" />
+                    <a href="">535. 圆蝌蚪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/535.00.png" alt="" />
+                    <a href="">536. 蓝蟾蜍</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/536.00.png" alt="" />
+                    <a href="">537. 總蜍王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/538.00.png" alt="" />
+                    <a href="">538. 投摔鬼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/539.00.png" alt="" />
+                    <a href="">539. 打击鬼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/540.00.png" alt="" />
+                    <a href="">540. 虫宝包</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/541.00.png" alt="" />
+                    <a href="">541. 宝包茧</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/542.00.png" alt="" />
+                    <a href="">542. 保姆虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/543.00.png" alt="" />
+                    <a href="">543. 百足蜈蚣</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/544.00.png" alt="" />
+                    <a href="">544. 车轮球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/545.00.png" alt="" />
+                    <a href="">545. 蜈蚣王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/546.00.png" alt="" />
+                    <a href="">546. 木棉球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/547.00.png" alt="" />
+                    <a href="">547. 风妖精</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/548.00.png" alt="" />
+                    <a href="">548. 百合根娃</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/549.00.png" alt="" />
+                    <a href="">549. 裙儿小姐</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/550.00.png" alt="" />
+                    <a href="">550. 野蛮鲈鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/551.00.png" alt="" />
+                    <a href="">551. 黑眼鳄</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/552.00.png" alt="" />
+                    <a href="">552. 混高解</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/553.00.png" alt="" />
+                    <a href="">553. 流境鲜</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/554.00.png" alt="" />
+                    <a href="">554. 火红不倒翁</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/555.00.png" alt="" />
+                    <a href="">555.达摩狒狒</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/556.00.png" alt="" />
+                    <a href="">556.沙铃仙人学</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/557.00.png" alt="" />
+                    <a href="">557.石居蟹</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/558.00.png" alt="" />
+                    <a href="">558.考殿居蟹</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/559.00.png" alt="" />
+                    <a href="">559.滑濟小子</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/560.00.png" alt="" />
+                    <a href="">560.头市混混</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/561.00.png" alt="" />
+                    <a href="">561.象征鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/562.00.png" alt="" />
+                    <a href="">562.哭哭面具</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/563.00.png" alt="" />
+                    <a href="">563.死神棺</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/564.00.png" alt="" />
+                    <a href="">564.原兽姆电</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/565.00.png" alt="" />
+                    <a href="">565.肋骨海龟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/566.00.png" alt="" />
+                    <a href="">566.始祖小鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/567.00.png" alt="" />
+                    <a href="">567.始祖大鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/568.00.png" alt="" />
+                    <a href="">568.破破袋</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/569.00.png" alt="" />
+                    <a href="">569.灰尘山</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/570.00.png" alt="" />
+                    <a href="">570.索罗亚</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/571.00.png" alt="" />
+                    <a href="">571.常罗亚克</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/572.00.png" alt="" />
+                    <a href="">572.泡沫策鼠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/573.00.png" alt="" />
+                    <a href="">573. 木守宫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/574.00.png" alt="" />
+                    <a href="">574.哥德宝宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/575.00.png" alt="" />
+                    <a href="">575.哥德小里</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/576.00.png" alt="" />
+                    <a href="">576.哥德小姐</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/577.00.png" alt="" />
+                    <a href="">577.单卵细胞球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/578.00.png" alt="" />
+                    <a href="">578.双卵细胞球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/579.00.png" alt="" />
+                    <a href="">579.人造细胞卵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/580.00.png" alt="" />
+                    <a href="">580.鸭宝宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/581.00.png" alt="" />
+                    <a href="">581.舞天鹅</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/582.00.png" alt="" />
+                    <a href="">582.迷你冰</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/583.00.png" alt="" />
+                    <a href="">583.多多冰</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/584.00.png" alt="" />
+                    <a href="">584,双倍多多冰</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/585.00.png" alt="" />
+                    <a href="">585.四季鹿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/586.00.png" alt="" />
+                    <a href="">586.萌芽鹿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/587.00.png" alt="" />
+                    <a href="">587.电飞解</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/588.00.png" alt="" />
+                    <a href="">588.整盖虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/589.00.png" alt="" />
+                    <a href="">589.弱士钢牛</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/590.00.png" alt="" />
+                    <a href="">590,哎呀球菇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/591.00.png" alt="" />
+                    <a href="">591.致露球銦</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/592.00.png" alt="" />
+                    <a href="">592.轻飘飘</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/593.00.png" alt="" />
+                    <a href="">593.早晚模</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/594.00.png" alt="" />
+                    <a href="">594.保姆曼波</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/595.00.png" alt="" />
+                    <a href="">595.电电虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/596.00.png" alt="" />
+                    <a href="">596.电蜘蛛</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/597.00.png" alt="" />
+                    <a href="">597.种子铁球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/598.00.png" alt="" />
+                    <a href="">598，坚果哑物</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/599.00.png" alt="" />
+                    <a href="">599.齿轮儿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/600.00.png" alt="" />
+                    <a href="">600.齿轮姐</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/601.00.png" alt="" />
+                    <a href="">601.齿轮怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/602.00.png" alt="" />
+                    <a href="">602.麻麻小鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/603.00.png" alt="" />
+                    <a href="">603.麻麻類</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/604.00.png" alt="" />
+                    <a href="">604.麻所續旗主</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/605.00.png" alt="" />
+                    <a href="">605，小灰怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/606.00.png" alt="" />
+                    <a href="">606.大字怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/607.00.png" alt="" />
+                    <a href="">607.烧光灵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/608.00.png" alt="" />
+                    <a href="">608.灯火幽灵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/609.00.png" alt="" />
+                    <a href="">609.水晶灯火灵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/610.00.png" alt="" />
+                    <a href="">610.牙牙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/611.00.png" alt="" />
+                    <a href="">611.婶牙花</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/612.00.png" alt="" />
+                    <a href="">612.双筹战龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/613.00.png" alt="" />
+                    <a href="">613.慢睡鎮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/614.00.png" alt="" />
+                    <a href="">614.冻原能</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/615.00.png" alt="" />
+                    <a href="">615.几何雷花</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/616.00.png" alt="" />
+                    <a href="">616.小幌蜗</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/617.00.png" alt="" />
+                    <a href="">617.敏捷虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/618.00.png" alt="" />
+                    <a href="">618.泥巴鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/619.00.png" alt="" />
+                    <a href="">619.功夫融</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/620.00.png" alt="" />
+                    <a href="">620.师父黯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/621.00.png" alt="" />
+                    <a href="">621.赤面地</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/622.00.png" alt="" />
+                    <a href="">622.泥偶小人</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/623.00.png" alt="" />
+                    <a href="">623.泥偶巨人</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/624.00.png" alt="" />
+                    <a href="">624.驹刀小兵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/625.00.png" alt="" />
+                    <a href="">625.劈斩司令</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/626.00.png" alt="" />
+                    <a href="">626.爆炸头水牛</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/627.00.png" alt="" />
+                    <a href=""> 627.毛头小鹰</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/628.00.png" alt="" />
+                    <a href="">628.勇士牌</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/629.00.png" alt="" />
+                    <a href="">629.秃围Y失</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/630.00.png" alt="" />
+                    <a href="">630.汽整娜</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/631.00.png" alt="" />
+                    <a href="">631.增蚁兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/632.00.png" alt="" />
+                    <a href="">632.铁蚊</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/633.00.png" alt="" />
+                    <a href="">633.铁蚊</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/634.00.png" alt="" />
+                    <a href="">634.双首暴龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/635.00.png" alt="" />
+                    <a href="">635.三首恶龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/636.00.png" alt="" />
+                    <a href="">636.燃旋虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/637.00.png" alt="" />
+                    <a href="">637.火神蛾</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-legend"><b>传说宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/five/638.00.png" alt="" />
+                    <a href="">638.勾帕路翁</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/639.00.png" alt="" />
+                    <a href="">639.代拉基翁</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/640.00.png" alt="" />
+                    <a href="">640.毕力吉翁</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/641.00.png" alt="" />
+                    <a href="">641.龙卷云</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/642.00.png" alt="" />
+                    <a href="">642.雷电云</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/643.00.png" alt="" />
+                    <a href="">643.莱希拉姆</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/644.00.png" alt="" />
+                    <a href="">644.捷克罗姆</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/645.00.png" alt="" />
+                    <a href="">645.土地云</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/646.00.png" alt="" />
+                    <a href="">646.凹雷姆</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/647.00.png" alt="" />
+                    <a href="">647.凯路迪欧</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/648.00.png" alt="" />
+                    <a href="">648.美洛耶塔</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/five/649.00.png" alt="" />
+                    <a href="">649.盖诺赛克特</a>
+                  </li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-5" style="margin-left: 30px">
+          <!-- 第二世代 -->
+          <table style="margin-top: 45px">
+            <tbody>
+              <tr>
+                <td colspan="2" style="background-color: yellow">
+                  <h3 style="background-color: yellow">
+                    <b style="background-color: yellow">第二世代</b>
+                  </h3>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-init"><b>初始宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/two/152.00.png" alt="" />
+                    <a href="">152. 菊草叶</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/153.00.png" alt="" />
+                    <a href="">153. 月桂叶</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/154.00.png" alt="" />
+                    <a href="">003. 大蓝葵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/155.00.png" alt="" />
+                    <a href="">155. 火球鼠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/156.00.png" alt="" />
+                    <a href="">156. 火岩鼠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/157.00.png" alt="" />
+                    <a href="">157. 火暴兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/158.00.png" alt="" />
+                    <a href="">158. 火锯鳄</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/159.00.png" alt="" />
+                    <a href="">159. 蓝鳄</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/160.00.png" alt="" />
+                    <a href="">160. 大力鳄</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-common"><b>一般宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/two/161.00.png" alt="" />
+                    <a href="">161. 尾立</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/162.00.png" alt="" />
+                    <a href="">162. 大尾立</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/163.00.png" alt="" />
+                    <a href="">163. 咕咕</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/164.00.png" alt="" />
+                    <a href="">164. 猫头夜鹰</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/165.00.png" alt="" />
+                    <a href="">165. 芭瓢虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/166.00.png" alt="" />
+                    <a href="">166. 安瓢虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/167.00.png" alt="" />
+                    <a href="">167. 圆丝蛛</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/168.00.png" alt="" />
+                    <a href="">168. 阿利多斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/169.00.png" alt="" />
+                    <a href="">169. 叉字蝠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/170.00.png" alt="" />
+                    <a href="">170. 灯笼鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/171.00.png" alt="" />
+                    <a href="">171. 电灯怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/172.00.png" alt="" />
+                    <a href="">172. 皮丘</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/173.00.png" alt="" />
+                    <a href="">173. 皮宝宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/174.00.png" alt="" />
+                    <a href="">174. 宝宝丁</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/175.00.png" alt="" />
+                    <a href="">175. 波克比</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/176.00.png" alt="" />
+                    <a href="">176. 波克基古</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/177.00.png" alt="" />
+                    <a href="">177. 天然雀</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/178.00.png" alt="" />
+                    <a href="">178. 天然鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/179.00.png" alt="" />
+                    <a href="">179. 咩利羊</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/180.00.png" alt="" />
+                    <a href="">180. 茸茸羊</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/181.00.png" alt="" />
+                    <a href="">181. 电龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/182.00.png" alt="" />
+                    <a href="">182. 美丽花</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/183.00.png" alt="" />
+                    <a href="">183. 玛力露</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/184.00.png" alt="" />
+                    <a href="">184. 玛力露丽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/185.00.png" alt="" />
+                    <a href="">185. 树才怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/186.00.png" alt="" />
+                    <a href="">186. 蚊香蛙皇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/187.00.png" alt="" />
+                    <a href="">187. 毽子草</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/188.00.png" alt="" />
+                    <a href="">188. 毽子花</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/189.00.png" alt="" />
+                    <a href="">189. 毽子锦</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/190.00.png" alt="" />
+                    <a href="">190. 长尾怪手</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/191.00.png" alt="" />
+                    <a href="">191. 向日种子</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/192.00.png" alt="" />
+                    <a href="">192. 向日花怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/193.00.png" alt="" />
+                    <a href="">193. 阳阳玛</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/194.00.png" alt="" />
+                    <a href="">194. 乌波</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/195.00.png" alt="" />
+                    <a href="">195. 沼王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/196.00.png" alt="" />
+                    <a href="">196. 太阳伊布</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/197.00.png" alt="" />
+                    <a href="">197. 月亮伊布</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/198.00.png" alt="" />
+                    <a href="">198. 黑暗鸦</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/199.00.png" alt="" />
+                    <a href="">199. 河马王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/200.00.png" alt="" />
+                    <a href="">200. 梦妖</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/201.00.png" alt="" />
+                    <a href="">201. 未知图腾</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/202.00.png" alt="" />
+                    <a href="">202. 果然翁</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/203.00.png" alt="" />
+                    <a href="">203. 麒麟奇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/204.00.png" alt="" />
+                    <a href="">204. 榛果球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/205.00.png" alt="" />
+                    <a href="">205. 佛烈托斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/206.00.png" alt="" />
+                    <a href=""> 206. 土龙弟弟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/207.00.png" alt="" />
+                    <a href="">207. 天蝎</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/208.00.png" alt="" />
+                    <a href="">208. 大钢蛇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/209.00.png" alt="" />
+                    <a href="">209. 布鲁</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/210.00.png" alt="" />
+                    <a href="">210. 布鲁皇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/211.00.png" alt="" />
+                    <a href="">211. 千针鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/212.00.png" alt="" />
+                    <a href=""> 212. 巨钳螳螂</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/213.00.png" alt="" />
+                    <a href="">213. 壶壶</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/214.00.png" alt="" />
+                    <a href=""> 214. 赫拉克罗斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/215.00.png" alt="" />
+                    <a href=""> 215. 狙拉</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/216.00.png" alt="" />
+                    <a href="">216. 解宝宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/217.00.png" alt="" />
+                    <a href="">217. 圈圈熊</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/218.00.png" alt="" />
+                    <a href="">218. 熔岩虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/219.00.png" alt="" />
+                    <a href="">219. 熔岩蜗牛</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/220.00.png" alt="" />
+                    <a href="">220. 小山猪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/221.00.png" alt="" />
+                    <a href="">221. 长毛猪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/222.00.png" alt="" />
+                    <a href="">222. 太阳珊瑚</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/223.00.png" alt="" />
+                    <a href="">223. 铁炮鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/224.00.png" alt="" />
+                    <a href="">224. 草鱼桶</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/225.00.png" alt="" />
+                    <a href="">225. 信使鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/226.00.png" alt="" />
+                    <a href="">226. 巨翅飞鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/227.00.png" alt="" />
+                    <a href="">227. 盔甲鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/228.00.png" alt="" />
+                    <a href="">228. 戴鱼比</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/229.00.png" alt="" />
+                    <a href=""> 229. 黑鲁加</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/230.00.png" alt="" />
+                    <a href="">230. 刺龙王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/231.00.png" alt="" />
+                    <a href="">231. 小小象</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/232.00.png" alt="" />
+                    <a href="">232. 顿甲</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/233.00.png" alt="" />
+                    <a href=""> 233. 多边兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/234.00.png" alt="" />
+                    <a href=""> 234. 惊角鹿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/235.00.png" alt="" />
+                    <a href="">235. 图图犬</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/236.00.png" alt="" />
+                    <a href="">236. 无畏小子</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/237.00.png" alt="" />
+                    <a href="">237. 战舞郎</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/238.00.png" alt="" />
+                    <a href="">238. 迷唇娃 </a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/239.00.png" alt="" />
+                    <a href="">239. 电击怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/240.00.png" alt="" />
+                    <a href="">240. 鸭嘴宝宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/241.00.png" alt="" />
+                    <a href="">241. 大奶罐</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/242.00.png" alt="" />
+                    <a href="">242. 幸福蛋</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/246.00.png" alt="" />
+                    <a href="">246. 幼基拉斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/247.00.png" alt="" />
+                    <a href="">247. 沙基拉斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/248.00.png" alt="" />
+                    <a href="">248. 班基拉斯</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-legend"><b>传说宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/two/244.00.png" alt="" />
+                    <a href="">243. 雷公</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/245.00.png" alt="" />
+                    <a href="">244. 炎帝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/246.00.png" alt="" />
+                    <a href="">245. 水君</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/249.00.png" alt="" />
+                    <a href="">249. 洛奇亚</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/250.00.png" alt="" />
+                    <a href="">250. 凤王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/two/251.00.png" alt="" />
+                    <a href="">251. 时拉比</a>
+                  </li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- 第四世代 -->
+          <table style="margin-top: 45px">
+            <tbody>
+              <tr>
+                <td colspan="2" style="background-color: rgb(104, 75, 233)">
+                  <h3 style="background-color: rgb(104, 75, 233)">
+                    <b style="background-color: rgb(104, 75, 233)">第四世代</b>
+                  </h3>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-init"><b>初始宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/four/387.00.png" alt="" />
+                    <a href="">387. 草苗龟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/388.00.png" alt="" />
+                    <a href="">388. 树林龟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/389.00.png" alt="" />
+                    <a href="">389. 土台龟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/390.00.png" alt="" />
+                    <a href="">390. 小火焰猴</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/391.00.png" alt="" />
+                    <a href="">391. 猛火猴</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/392.00.png" alt="" />
+                    <a href="">392. 烈焰猴</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/393.00.png" alt="" />
+                    <a href="">393. 政加曼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/394.00.png" alt="" />
+                    <a href="">394. 波皇子</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/395.00.png" alt="" />
+                    <a href="">395. 帝王拿波</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-common"><b>一般宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/four/396.00.png" alt="" />
+                    <a href="">396.姆克儿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/397.00.png" alt="" />
+                    <a href="">397.姆克鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/398.00.png" alt="" />
+                    <a href="">398.姆克惠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/399.00.png" alt="" />
+                    <a href="">399.大牙狸</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/400.00.png" alt="" />
+                    <a href="">400.大尾狸</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/401.00.png" alt="" />
+                    <a href="">401.网法师</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/402.00.png" alt="" />
+                    <a href="">402.音箱蟀</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/403.00.png" alt="" />
+                    <a href="">403.小猫怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/404.00.png" alt="" />
+                    <a href="">404.勒克猫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/405.00.png" alt="" />
+                    <a href="">405.伦琴猫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/406.00.png" alt="" />
+                    <a href="">406.含羞苞</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/407.00.png" alt="" />
+                    <a href="">407.罗丝需朵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/408.00.png" alt="" />
+                    <a href="">408.头盖龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/409.00.png" alt="" />
+                    <a href="">409.战检地</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/410.00.png" alt="" />
+                    <a href="">410.后甲龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/411.00.png" alt="" />
+                    <a href="">411.护城龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/412.00.png" alt="" />
+                    <a href="">412.结草儿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/413.00.png" alt="" />
+                    <a href="">413.结草贵妇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/414.00.png" alt="" />
+                    <a href="">414.绅土蛾</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/415.00.png" alt="" />
+                    <a href="">415.三蜜蜂</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/416.00.png" alt="" />
+                    <a href="">416.蜂女王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/417.00.png" alt="" />
+                    <a href="">417.帕奇利兹</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/418.00.png" alt="" />
+                    <a href="">418.泳圈融</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/419.00.png" alt="" />
+                    <a href="">419.浮潜融</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/420.00.png" alt="" />
+                    <a href="">420.樱花宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/421.00.png" alt="" />
+                    <a href="">421.樱花儿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/422.00.png" alt="" />
+                    <a href="">422.无壳海免</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/423.00.png" alt="" />
+                    <a href="">423.海觉兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/424.00.png" alt="" />
+                    <a href="">424.双尾怪手</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/425.00.png" alt="" />
+                    <a href="">425.飘飘球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/426.00.png" alt="" />
+                    <a href="">426.随风球</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/427.00.png" alt="" />
+                    <a href="">427.卷卷耳</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/428.00.png" alt="" />
+                    <a href="">428.长耳觉</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/429.00.png" alt="" />
+                    <a href="">429.梦妖魔</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/430.00.png" alt="" />
+                    <a href="">430.乌鸦头头</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/431.00.png" alt="" />
+                    <a href="">431.魅力喵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/432.00.png" alt="" />
+                    <a href="">432.东施喵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/433.00.png" alt="" />
+                    <a href="">433.铃铛响</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/434.00.png" alt="" />
+                    <a href="">434.與融喫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/435.00.png" alt="" />
+                    <a href="">435.坦克息融</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/436.00.png" alt="" />
+                    <a href="">436.铜續怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/437.00.png" alt="" />
+                    <a href="">437.青铜钟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/438.00.png" alt="" />
+                    <a href="">438.盘才怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/439.00.png" alt="" />
+                    <a href="">439.魔尼尼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/440.00.png" alt="" />
+                    <a href="">440.小福蛋</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/441.00.png" alt="" />
+                    <a href="">441.驱模乌</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/442.00.png" alt="" />
+                    <a href="">442.花岩怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/443.00.png" alt="" />
+                    <a href="">443.國陆鲨</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/444.00.png" alt="" />
+                    <a href="">444,尖牙陆盛</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/445.00.png" alt="" />
+                    <a href="">445.烈咬陆鲨</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/446.00.png" alt="" />
+                    <a href="">446.小卡比兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/447.00.png" alt="" />
+                    <a href="">447.利欧路</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/448.00.png" alt="" />
+                    <a href="">448.路卡利欧</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/449.00.png" alt="" />
+                    <a href="">449.沙河马</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/450.00.png" alt="" />
+                    <a href="">450.河马兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/451.00.png" alt="" />
+                    <a href="">451.钳尾竭</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/452.00.png" alt="" />
+                    <a href="">452.龙王眼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/453.00.png" alt="" />
+                    <a href="">453.不良蛙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/454.00.png" alt="" />
+                    <a href="">454.毒骷蛙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/455.00.png" alt="" />
+                    <a href="">455.尖牙笼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/456.00.png" alt="" />
+                    <a href="">456.荧光鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/457.00.png" alt="" />
+                    <a href="">457.霓虹鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/458.00.png" alt="" />
+                    <a href="">458.小球飞鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/459.00.png" alt="" />
+                    <a href="">459.雪立怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/460.00.png" alt="" />
+                    <a href="">460.蒙雪王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/461.00.png" alt="" />
+                    <a href="">461.玛扭拉</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/462.00.png" alt="" />
+                    <a href="">462.自爆磁怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/463.00.png" alt="" />
+                    <a href="">463. 木守宫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/464.00.png" alt="" />
+                    <a href="">464.超甲狂醒</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/465.00.png" alt="" />
+                    <a href="">465.巨硬藤</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/466.00.png" alt="" />
+                    <a href="">466.电击魔兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/467.00.png" alt="" />
+                    <a href="">467.鸭嘴炎善</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/468.00.png" alt="" />
+                    <a href="">468.波克基斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/469.00.png" alt="" />
+                    <a href="">469.远古巨蜒</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/470.00.png" alt="" />
+                    <a href="">470.叶伊布</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/471.00.png" alt="" />
+                    <a href="">471.冰伊布</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/472.00.png" alt="" />
+                    <a href="">472.天蝎王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/473.00.png" alt="" />
+                    <a href="">473.象牙猪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/474.00.png" alt="" />
+                    <a href="">474.多边兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/475.00.png" alt="" />
+                    <a href="">475.艾路需朵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/476.00.png" alt="" />
+                    <a href="">476.大朝北鼻</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/477.00.png" alt="" />
+                    <a href="">477,黑夜魔灵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/478.00.png" alt="" />
+                    <a href="">478.雪妖女</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/479.00.png" alt="" />
+                    <a href="">479.洛托姆</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-legend"><b>传说宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/four/480.00.png" alt="" />
+                    <a href="">480.由克希</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/481.00.png" alt="" />
+                    <a href="">481.艾姆利多</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/482.00.png" alt="" />
+                    <a href="">482.亚克诺姆</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/483.00.png" alt="" />
+                    <a href="">483.帝牙卢卡</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/484.00.png" alt="" />
+                    <a href="">484.帕路奇亚</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/485.00.png" alt="" />
+                    <a href="">485.席多蓝恩</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/486.00.png" alt="" />
+                    <a href="">486.雷吉奇卡斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/487.00.png" alt="" />
+                    <a href="">487.骑拉帝纳</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/four/488.00.png" alt="" />
+                    <a href="">488.克雷色利亚</a>
+                  </li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- 第六世代 -->
+          <table style="margin-top: 45px">
+            <tbody>
+              <tr>
+                <td colspan="2" style="background-color: rgb(181, 222, 238)">
+                  <h3 style="background-color: rgb(181, 222, 238)">
+                    <b style="background-color: rgb(181, 222, 238)">第六世代</b>
+                  </h3>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-init"><b>初始宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/six/650.00.png" alt="" />
+                    <a href="">650.哈力粟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/651.00.png" alt="" />
+                    <a href="">651.胖群畸力</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/652.00.png" alt="" />
+                    <a href="">652.布里卡隆</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/653.00.png" alt="" />
+                    <a href="">653.火狐理</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/654.00.png" alt="" />
+                    <a href="">654.长尾火狐</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/655.00.png" alt="" />
+                    <a href="">655.妖火红狐</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/656.00.png" alt="" />
+                    <a href="">656.呱呱泡能</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/657.00.png" alt="" />
+                    <a href="">657.呱头蛙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/658.00.png" alt="" />
+                    <a href="">658.甲贺忍娃</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-common"><b>一般宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/six/659.00.png" alt="" />
+                    <a href="">659.据掘兔</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/660.00.png" alt="" />
+                    <a href="">660.掘地免</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/661.00.png" alt="" />
+                    <a href="">661.小航雀</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/662.00.png" alt="" />
+                    <a href="">662.火箭雀</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/663.00.png" alt="" />
+                    <a href="">663.烈箭鹰</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/664.00.png" alt="" />
+                    <a href="">664.粉蝶虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/665.00.png" alt="" />
+                    <a href="">665.粉蝶蛹</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/666.00.png" alt="" />
+                    <a href="">666.彩粉蝶</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/667.00.png" alt="" />
+                    <a href="">667.小狮狮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/668.00.png" alt="" />
+                    <a href="">668.火炎狮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/669.00.png" alt="" />
+                    <a href="">669.花蕾禧</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/670.00.png" alt="" />
+                    <a href="">670.花叶蒂</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/671.00.png" alt="" />
+                    <a href="">671.花清夫人</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/672.00.png" alt="" />
+                    <a href="">672.坐骑小羊</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/673.00.png" alt="" />
+                    <a href="">673.坐骑山羊</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/674.00.png" alt="" />
+                    <a href="">674.最皮能猫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/675.00.png" alt="" />
+                    <a href="">675.流氓辦猫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/676.00.png" alt="" />
+                    <a href="">676.多丽米亚</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/677.00.png" alt="" />
+                    <a href="">677.妙喵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/678.00.png" alt="" />
+                    <a href="">678.超松妙喵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/679.00.png" alt="" />
+                    <a href="">679.独剑稍</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/680.00.png" alt="" />
+                    <a href="">680.双剑鞘</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/681.00.png" alt="" />
+                    <a href="">681.坚质创怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/682.00.png" alt="" />
+                    <a href="">682.粉香香</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/683.00.png" alt="" />
+                    <a href="">683.芳香精</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/684.00.png" alt="" />
+                    <a href="">684.绵绵泡芙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/685.00.png" alt="" />
+                    <a href="">685.胖粗呢</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/686.00.png" alt="" />
+                    <a href="">686.好啦就</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/687.00.png" alt="" />
+                    <a href="">687.乌贼王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/688.00.png" alt="" />
+                    <a href="">688.龟期脚</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/689.00.png" alt="" />
+                    <a href="">689.電足巨铠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/690.00.png" alt="" />
+                    <a href="">690.垃垃藻</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/691.00.png" alt="" />
+                    <a href="">691.馬蓋龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/692.00.png" alt="" />
+                    <a href="">692.铁肾枪虾</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/693.00.png" alt="" />
+                    <a href="">693.钢炮臂虾</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/694.00.png" alt="" />
+                    <a href="">694.伞电蜥</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/695.00.png" alt="" />
+                    <a href="">695.光电伞蜥</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/696.00.png" alt="" />
+                    <a href="">696.宝宝蒙龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/697.00.png" alt="" />
+                    <a href="">697.怪额坨</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/689.00.png" alt="" />
+                    <a href="">698.冰雪龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/699.00.png" alt="" />
+                    <a href="">699.冰雪巨龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/700.00.png" alt="" />
+                    <a href="">700.仙子伊布</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/701.00.png" alt="" />
+                    <a href="">701.摔角鹰人</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/702.00.png" alt="" />
+                    <a href="">702.略略鼠</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/703.00.png" alt="" />
+                    <a href="">703.小碎钻</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/704.00.png" alt="" />
+                    <a href="">704.黏點宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/705.00.png" alt="" />
+                    <a href="">705.黏美儿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/706.00.png" alt="" />
+                    <a href="">706.站美龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/707.00.png" alt="" />
+                    <a href="">707.明黑儿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/708.00.png" alt="" />
+                    <a href="">708.小木灵</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/709.00.png" alt="" />
+                    <a href="">709.朽木妖</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/710.00.png" alt="" />
+                    <a href="">710.南瓜精</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/711.00.png" alt="" />
+                    <a href="">711.南瓜怪人</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/712.00.png" alt="" />
+                    <a href="">712.冰宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/713.00.png" alt="" />
+                    <a href="">713.冰岩怪</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/714.00.png" alt="" />
+                    <a href="">714.戰编</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/715.00.png" alt="" />
+                    <a href="">715.音波龙</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-legend"><b>传说宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/six/716.00.png" alt="" />
+                    <a href="">716.暨尔尼亚斯</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/717.00.png" alt="" />
+                    <a href="">717.伊藝尔塔尔</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/718.00.png" alt="" />
+                    <a href="">718.基格尔德</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/719.00.png" alt="" />
+                    <a href="">719.葡安希</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/720.00.png" alt="" />
+                    <a href="">720.胡帕</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/six/721.00.png" alt="" />
+                    <a href="">721.被尔凯尼愿</a>
+                  </li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- 第七世代 -->
+          <table style="margin-top: 45px">
+            <tbody>
+              <tr>
+                <td colspan="2" style="background-color: gray">
+                  <h3 style="background-color: gray">
+                    <b style="background-color: gray">第七世代</b>
+                  </h3>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-init"><b>初始宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/seven/722.00.png" alt="" />
+                    <a href="">722.木木枭</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/723.00.png" alt="" />
+                    <a href="">723.投羽枭</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/724.00.png" alt="" />
+                    <a href="">724.组时树架</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/725.00.png" alt="" />
+                    <a href="">725.火斑瞄</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/726.00.png" alt="" />
+                    <a href="">726.炎热响</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/727.00.png" alt="" />
+                    <a href="">727.烘焰咆哮虎</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/728.00.png" alt="" />
+                    <a href="">728.球球海狮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/729.00.png" alt="" />
+                    <a href="">729.花漾海狮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/730.00.png" alt="" />
+                    <a href="">730.西需海王</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-common"><b>一般宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/seven/730.00.png" alt="" />
+                    <a href="">730.西需海王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/731.00.png" alt="" />
+                    <a href="">731.小笃儿</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/732.00.png" alt="" />
+                    <a href="">732.喇叭啄鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/733.00.png" alt="" />
+                    <a href="">733.铳廓大鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/734.00.png" alt="" />
+                    <a href="">734.羅融少</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/735.00.png" alt="" />
+                    <a href="">735.猫融探长</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/736.00.png" alt="" />
+                    <a href="">736.强预鸡母虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/737.00.png" alt="" />
+                    <a href="">737.虫电宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/738.00.png" alt="" />
+                    <a href="">738.锹农炮虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/739.00.png" alt="" />
+                    <a href="">739.好胜螺</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/740.00.png" alt="" />
+                    <a href="">740.好胜毛蟹</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/741.00.png" alt="" />
+                    <a href="">741.花舞鸟</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/742.00.png" alt="" />
+                    <a href="">742.萌虻</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/743.00.png" alt="" />
+                    <a href="">743.蝶结的虹</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/744.00.png" alt="" />
+                    <a href="">744.岩狗狗</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/745.00.png" alt="" />
+                    <a href="">745.藥若號人</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/746.00.png" alt="" />
+                    <a href="">746.辆丁鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/747.00.png" alt="" />
+                    <a href="">747.好坏星</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/748.00.png" alt="" />
+                    <a href="">748.超坏星</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/749.00.png" alt="" />
+                    <a href="">749.据野仔</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/750.00.png" alt="" />
+                    <a href="">750.重泥晚马</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/751.00.png" alt="" />
+                    <a href="">751.滴蛛</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/752.00.png" alt="" />
+                    <a href="">752.沈蛛霸</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/753.00.png" alt="" />
+                    <a href="">753.伪經草</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/754.00.png" alt="" />
+                    <a href="">754.兰螺花</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/755.00.png" alt="" />
+                    <a href="">755.睡睡菇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/756.00.png" alt="" />
+                    <a href="">756.灯罩夜菇</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/757.00.png" alt="" />
+                    <a href="">757.夜盗火蜥</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/758.00.png" alt="" />
+                    <a href="">758.焰后蜥</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/759.00.png" alt="" />
+                    <a href="">759.空偶服</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/760.00.png" alt="" />
+                    <a href="">760.穿暑能</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/761.00.png" alt="" />
+                    <a href="">761.甜竹竹</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/762.00.png" alt="" />
+                    <a href="">762.甜舞妮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/763.00.png" alt="" />
+                    <a href="">763.甜冷美后</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/764.00.png" alt="" />
+                    <a href="">764.花疗环环</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/765.00.png" alt="" />
+                    <a href="">765.智挥猩</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/766.00.png" alt="" />
+                    <a href="">766.按概猴</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/767.00.png" alt="" />
+                    <a href="">767.胆小虫</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/768.00.png" alt="" />
+                    <a href="">768.具甲武者</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/769.00.png" alt="" />
+                    <a href="">769.沙丘娃</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/770.00.png" alt="" />
+                    <a href="">770.端沙堡爷</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/771.00.png" alt="" />
+                    <a href="">771.攀德梦</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/774.00.png" alt="" />
+                    <a href="">774.小碗星|</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/775.00.png" alt="" />
+                    <a href="">775.树比星版</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/776.00.png" alt="" />
+                    <a href=""> 776.爆焰龟兽</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/778.00.png" alt="" />
+                    <a href="">778.谜拟Q</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/779.00.png" alt="" />
+                    <a href="">779.磨牙彩皮鱼</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/780.00.png" alt="" />
+                    <a href="">780.老鑫龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/781.00.png" alt="" />
+                    <a href="">781.破破腕轮</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/782.00.png" alt="" />
+                    <a href="">782.心鳞宝</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/783.00.png" alt="" />
+                    <a href="">783.綜甲龙</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/784.00.png" alt="" />
+                    <a href="">784.仗尾鳞甲龙</a>
+                  </li>
+                </td>
+              </tr>
+              <tr>
+                <td class="miao-shu-legend"><b>传说宝可梦</b></td>
+                <td class="icons-names">
+                  <li>
+                    <img src="./imgs/tujian/seven/730.00.png" alt="" />
+                    <a href="">785.科斯美的</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/786.00.png" alt="" />
+                    <a href="">786.紫尔道需欧</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/787.00.png" alt="" />
+                    <a href="">787,露奈雅拉</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/788.00.png" alt="" />
+                    <a href="">788.成音伊德</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/789.00.png" alt="" />
+                    <a href="">789.操国数</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/790.00.png" alt="" />
+                    <a href="">790.無洛美螂</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/791.00.png" alt="" />
+                    <a href="">791,电甲木</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/792.00.png" alt="" />
+                    <a href="">792.铁火辉夜</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/793.00.png" alt="" />
+                    <a href="">793.纸编创</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/794.00.png" alt="" />
+                    <a href="">794.要食大王</a>
+                  </li>
+                  <li>
+                    <img src="./imgs/tujian/seven/795.00.png" alt="" />
+                    <a href="">795.玛机雅螺</a>
+                  </li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      /* 宽度包含内边距padding */
+      box-sizing: border-box;
+      background-color: #f4f4f4;
+    }
+    .top-header {
+      height: 80px;
+      line-height: 55px;
+      text-align: right;
+      font-size: 18px;
+      padding-right: 15px;
+      border-bottom: 3px gray solid;
+    }
+    .top-header .col-md-11 {
+      height: 80px;
+    }
+    .top-header .col-md-11 a {
+      width: 85px;
+      margin-left: 25px;
+    }
+    .top-header .col-md-11 a:last-child {
+      width: 110px;
+    }
+    #title {
+      margin-left: 15px;
+      border-bottom: 3px #000 solid;
+    }
+    table tr td li {
+      list-style: none;
+      margin-left: 20px;
+      display: inline;
+      float: left;
+      width: 100px;
+    }
+    table {
+      margin-bottom: 80px;
+      margin-right: 10px;
+    }
+    table tr {
+      border: 2px orange solid;
+    }
+    .miao-shu-init {
+      width: 100px;
+      height: 130px;
+      text-align: center;
+      background-color: pink;
+      border-right: 2px red solid;
+    }
+    .miao-shu-init b {
+      text-align: center;
+      line-height: 130px;
+      background-color: pink;
+    }
+    .miao-shu-common {
+      width: 100px;
+      height: 560px;
+      text-align: center;
+      background-color: pink;
+      border-right: 2px red solid;
+    }
+    .miao-shu-common b {
+      text-align: center;
+      line-height: 560px;
+      background-color: pink;
+    }
+    .miao-shu-legend {
+      width: 100px;
+      height: 65px;
+      text-align: center;
+      background-color: pink;
+      border-right: 2px red solid;
+    }
+    .miao-shu-legend b {
+      text-align: center;
+      line-height: 65px;
+      background-color: pink;
+    }
+    .icons-names {
+      width: 900px;
+    }
+    .my_title {
+      height: 45px;
+      line-height: 45px;
+      border-bottom: 1px #000 solid;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bolder;
+    }
+    .content {
+      height: 400px;
+      background-color: #fff7fbff;
+      padding-left: 8px;
+      padding-top: 5px;
+    }
+    .content p {
+      background-color: #fff7fbff;
+    }
+    .content b {
+      background-color: #fff7fbff;
+    }
+    .poke-attribute {
+      width: 60px;
+      margin: 0 40px;
+      margin-top: 15px;
+      float: left;
+    }
+    .poke-attribute p {
+      text-align: center;
+    }
+  </style>
+</html>

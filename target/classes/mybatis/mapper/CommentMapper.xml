@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zugovo.mapper.CommentMapper">
+
+    <!-- saveComment()方法 -->
+    <insert id="saveComment" parameterType="Comment" useGeneratedKeys="true" keyProperty="id" >
+        insert into comment(comment_content, aid, uid)
+        values(#{commentContent}, #{aid}, #{uid})
+    </insert>
+
+    <!-- queryCommentsByAid()方法 -->
+    <resultMap id="commentMap" type="Comment">
+        <result property="id" column="id" />
+        <result property="commentContent" column="comment_content" />
+        <result property="aid" column="aid" />
+        <result property="uid" column="uid" />
+        <association property="user">
+            <result property="username" column="username" />
+            <result property="imgUrl" column="img_url" />
+        </association>
+    </resultMap>
+    <select id="queryCommentsByAid" parameterType="int" resultMap="commentMap" >
+        select user.*, comment.*
+        from
+        comment JOIN user ON user.id = comment.uid
+        where aid = #{id}
+    </select>
+
+    <!-- deleteCommentByAid()方法 -->
+    <delete id="deleteCommentByAid">
+        delete from comment where aid = #{aid}
+    </delete>
+
+</mapper>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datetimepicker.min.css}" media="screen">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+      integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker.js}"></script>
+    <title>Poke-注册</title>
+  </head>
+  <body>
+    <!-- 头部 -->
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-1">
+          <a th:href="@{/index.html}"
+            ><img th:src="@{/imgs/p1.jpg}" class="img-circle"
+          /></a>
+        </div>
+        <div class="col-md-11">
+          <a th:href="@{/toLogin}">
+            <span id="login" class="label label-success"> 登录 </span>
+          </a>
+          <a th:href="@{/toRegister}">
+            <span id="register" class="label label-default">
+              为您创建账户?
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- 左边导航栏 -->
+    <div id="left" class="col-md-1">
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">快捷菜单</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/poke-dex}">宝可梦</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">招式</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">特性</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">我的</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/user/info}">我的主页</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">我的收藏</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+    </div>
+    <div id="right" class="col-md-11">
+      <!-- 右侧顶部导航栏 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="#">注册</a></li>
+        <form th:action="@{/search}" method="get" class="navbar-form navbar-left pull-right">
+          <input id="pokename" name="pokename" type="text" class="form-control" placeholder="搜索Poke百科" />
+          <button type="submit" class="btn btn-default">
+            <span>搜索</span>
+          </button>
+        </form>
+      </ul>
+      <!-- 标题, 用于显示当前是哪个板块 -->
+      <div id="title" class="col-md-12">
+        <h1>
+          注册, &nbsp;&nbsp;
+          <small><b>Poke百科是由像您一样的人们构筑的!</b></small>
+        </h1>
+      </div>
+      <div class="row" id="right-content">
+        <div class="col-md-6">
+          <!-- 注册表单 -->
+          <form style="margin-top: 30px" th:action="@{/register}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label >用户名(必需)</label>
+              <input
+                required
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                placeholder="请输入您的用户名...."
+                style="width: 300px"
+              />
+            </div>
+            <div class="form-group">
+              <label style="margin-right: 30px">性别(必需)</label>
+              <label class="radio-inline">
+                <input
+                  type="radio"
+                  name="sex"
+                  id="male"
+                  value="0"/>男</label>
+              <label class="radio-inline">
+                <input
+                  type="radio"
+                  name="sex"
+                  id="female"
+                  value="1"/>女</label>
+            </div>
+            <div class="form-group">
+              <label >头像上传</label>
+              <input type="file" name="imgUpload" />
+            </div>
+            <div class="form-group">
+              <label>邮箱(必需)</label>
+              <input
+                required
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="请输入您的邮箱..."
+                style="width: 300px"
+                onkeyup="validate_mail()"
+              /><span id="mail-ti-shi"></span>
+              <span id="helpBlock" class="help-block">邮箱格式: xxxxx@xxx.xxx</span>
+            </div>
+            <div class="form-group">
+              <label class="control-label"
+                >密码(必需)</label
+              >
+              <input
+                required
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="请输入您的密码..."
+                style="width: 300px"
+              />
+            </div>
+            <div class="form-group">
+              <label class="control-label"
+                >确认密码(必需)</label
+              >
+              <input
+                required
+                type="password"
+                class="form-control"
+                id="password-check"
+                placeholder="请确认您的密码..."
+                style="width: 300px"
+                onkeyup="validate_pwd()"
+              /><span id="ti-shi"></span>
+            </div>
+            <div class="form-group">
+              <label >电话</label>
+              <input
+                type="text"
+                class="form-control"
+                id="tel"
+                name="tel"
+                placeholder="请输入您的电话...."
+                style="width: 300px"
+              />
+            </div>
+            <div class="form-group">
+              <label>住址</label>
+              <input
+                type="text"
+                class="form-control"
+                id="addr"
+                name="addr"
+                placeholder="请输入您的电话...."
+                style="width: 300px"
+              />
+            </div>
+            <div class="form-group">
+              <label>年龄</label>
+              <input
+                type="text"
+                class="form-control"
+                id="age"
+                name="age"
+                placeholder="请输入您的年龄...."
+                style="width: 300px"
+              />
+            </div>
+            <div class="form-group">
+              <label>生日</label>
+              <!-- 带有重置按钮(用于清空输入框)的组件模板 -->
+              <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-MM-dd"
+                      data-link-field="dtp_input2" data-link-format="yyyy-MM-dd">
+                <input class="form-control" size="16" name="birthStr" type="text" value=""  />
+                <span class="input-group-addon" >
+                  <span class="glyphicon glyphicon-remove"></span>
+                </span>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+            </div>
+            <button
+              id="submit-button"
+              type="submit"
+              class="btn btn-default"
+              disabled
+            >
+              注册
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker_custom.js}"></script>
+  <script type="text/javascript">
+    $(".form_date").datetimepicker({
+      language: "custom",
+      weekStart: 1,
+      todayBtn: 1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      minView: 2,
+      forceParse: 0,
+    });
+    // 确认密码功能
+    function validate_pwd() {
+      let pwd1 = document.getElementById("password").value;
+      let pwd2 = document.getElementById("password-check").value;
+      if (pwd1 === pwd2) {
+        document.getElementById("ti-shi").innerHTML =
+          "<font color='green'>两次密码相同</font>";
+        document.getElementById("submit-button").disabled = false; // 激活按钮
+      } else {
+        document.getElementById("ti-shi").innerHTML =
+          "<font color='red'>两次密码不相同</font>";
+        document.getElementById("submit-button").disabled = true; //禁用按钮
+      }
+    }
+    // 确认邮箱格式
+    function validate_mail() {
+      let email = document.getElementById("email").value;
+      // 规则: 以字母或者数字开头, 中间可以是多个数字字母下划线或"-"
+      // 然后是@开头 +　数字或者字母
+      // 最后是.符号加2~4个字母结尾
+      const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+      if (reg.test(email)) {
+        document.getElementById("mail-ti-shi").innerHTML =
+          "<font color='green'><b>√ 邮箱格式正确</b></font>";
+        document.getElementById("submit-button").disabled = false; // 激活按钮
+      } else {
+        document.getElementById("mail-ti-shi").innerHTML =
+          "<font color='red'><b>× 邮箱格式不正确</b></font>";
+        document.getElementById("submit-button").disabled = true; //禁用按钮
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      /* 宽度包含内边距padding */
+      box-sizing: border-box;
+      background-color: #f4f4f4;
+    }
+    .top-header {
+      height: 80px;
+      line-height: 55px;
+      text-align: right;
+      font-size: 18px;
+      padding-right: 15px;
+      border-bottom: 3px gray solid;
+    }
+    .top-header .col-md-11 {
+      height: 80px;
+    }
+    .top-header .col-md-11 a {
+      width: 85px;
+      margin-left: 25px;
+    }
+    .top-header .col-md-11 a:last-child {
+      width: 110px;
+    }
+    #title {
+      margin-left: 15px;
+      border-bottom: 3px #000 solid;
+    }
+    #right-content {
+      border-left: 1px skyblue solid;
+      margin-top: 105px;
+      margin-left: 15px;
+    }
+  </style>
+</html>

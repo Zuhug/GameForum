@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zugovo.mapper.PokeInfoMapper">
+
+    <!-- savePokeInfo()方法 -->
+    <insert id="savePokeInfo" parameterType="PokeInfo" useGeneratedKeys="true" keyProperty="id" >
+        insert into poke_info(hp, atk, def, spatk, spdef, speed, dex, img300_src, img128_src, poke_name)
+        values(#{hp}, #{atk}, #{def}, #{spatk}, #{spdef}, #{speed}, #{dex}, #{img300Src}, #{img128Src}, #{pokeName})
+    </insert>
+
+    <!-- updatePokeInfo()方法 -->
+    <update id="updatePokeInfo" parameterType="PokeInfo">
+        update poke_info
+        <set>
+            <if test="hp != null"> hp = #{hp}, </if>
+            <if test="atk != null"> atk = #{atk}, </if>
+            <if test="def != null"> def = #{def}, </if>
+            <if test="spatk != null"> spatk = #{spatk}, </if>
+            <if test="spdef != null"> spdef = #{spdef}, </if>
+            <if test="speed != null"> speed = #{speed}, </if>
+            <if test="dex != null"> dex = #{dex}, </if>
+            <if test="img300Src != null"> img300_src = #{img300Src}, </if>
+            <if test="img128Src != null"> img128_src = #{img128Src}, </if>
+            <if test="pokeName != null"> poke_name = #{pokeName}, </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- dropPokeInfo()方法 -->
+    <delete id="dropPokeInfo" parameterType="int">
+        delete from poke_info where id = #{id}
+    </delete>
+
+    <!-- findPokeInfoById()方法 -->
+    <select id="findPokeInfoById" parameterType="int" resultType="PokeInfo">
+        select * from poke_info where id = #{id}
+    </select>
+
+    <select id="findPokeByName" parameterType="String" resultType="PokeInfo" >
+        <bind name="pokeName" value="'%'+ _parameter +'%'"/>
+        select * from poke_info
+        where poke_name like #{pokeName}
+        limit 1;
+    </select>
+
+
+    <!-- findAttributeFromPokeInfo -->
+    <resultMap id="pokeInfoMapper" type="PokeInfo">
+        <result property="id" column="id" />
+        <result property="hp" column="hp" />
+        <result property="atk" column="atk" />
+        <result property="def" column="def" />
+        <result property="spatk" column="spatk" />
+        <result property="spdef" column="spdef" />
+        <result property="speed" column="speed"/>
+        <result property="dex" column="dex" />
+        <result property="img300Src" column="img300_src" />
+        <result property="img128Src" column="img128_src" />
+        <result property="pokeName" column="poke_name" />
+        <collection property="pokeAttributes" ofType="PokeAttribute">
+            <result property="attribute" column="attribute" />
+        </collection>
+    </resultMap>
+    <select id="findAttributeFromPokeInfo" resultMap="pokeInfoMapper">
+        select pi.*, pa.*
+        from
+        poke_info pi JOIN pa_pi pp ON pi.id = pp.poke_id
+        JOIN poke_attribute pa ON pp.attr_id = pa.id
+        where
+        pi.id = #{id}
+    </select>
+
+    <!-- findFeatureFromPokeInfo -->
+    <select id="findFeatureFromPokeInfo" resultType="PokeFeature" >
+        select pf.*
+        from
+        poke_info pi JOIN pf_pi pp ON pi.id = pp.poke_id
+        JOIN poke_feature pf ON pf.id = pp.fea_id
+        where
+        pi.id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zugovo.mapper.AccountMapper">
+
+    <!-- queryAccountByForeignKey()方法 -->
+    <select id="queryAccountByForeignKey" parameterType="int" resultType="Account">
+        select * from account where uid = #{uid}
+    </select>
+
+    <!-- saveAccount()方法 -->
+    <insert id="saveAccount" parameterType="Account" useGeneratedKeys="true" keyProperty="id" >
+        insert into account(uid, email, password)
+        values(#{uid}, #{email}, #{password})
+    </insert>
+
+    <!-- updateAccount()方法 -->
+    <update id="updateAccount" parameterType="Account">
+        update account
+        <set>
+            <if test="uid != null"> uid = #{uid}, </if>
+            <if test="email != null"> email = #{email}, </if>
+            <if test="password != null"> password = #{password}, </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- dropAccount()方法 -->
+    <delete id="dropAccount" parameterType="int">
+        delete from account where id = #{id}
+    </delete>
+
+    <!-- findAccountById()方法 -->
+    <select id="findAccountById" parameterType="int" resultType="Account">
+        select * from account where id = #{id}
+    </select>
+
+    <!-- accountExists()方法 -->
+    <select id="accountExists" parameterType="Account" resultType="Account">
+        select * from account where email = #{email} and password = #{password}
+    </select>
+
+    <!-- findUserFromAccount()方法 -->
+    <resultMap id="accountMap" type="Account">
+        <result property="id" column="id" />
+        <result property="uid" column="uid" />
+        <result property="email" column="email" />
+        <result property="password" column="password" />
+        <association property="user">
+            <result property="username" column="username" />
+            <result property="imgUrl" column="img_url" />
+            <result property="sex" column="sex" />
+            <result property="addr" column="addr" />
+            <result property="tel" column="tel" />
+            <result property="age" column="age" />
+            <result property="rid" column="rid" />
+            <association property="role">
+                <result property="descri" column="descri" />
+            </association>
+        </association>
+    </resultMap>
+    <select id="findUserFromAccount" resultMap="accountMap" >
+        select
+        account.*,
+        user.*,
+        role.* from
+        account JOIN user ON account.uid = user.id
+        JOIN role ON role.id = user.rid
+        where account.id = #{id}
+    </select>
+
+</mapper>

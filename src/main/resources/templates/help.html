@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+      integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Poke-帮助</title>
+  </head>
+  <body>
+    <!-- 头部 -->
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-1">
+          <a th:href="@{/}">
+            <img th:src="@{/imgs/p1.jpg}" class="img-circle"/>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- 左边导航栏 -->
+    <div id="left" class="col-md-1">
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">快捷菜单</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/poke-dex}">宝可梦</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">招式</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">特性</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">我的</span>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/user/info}">我的主页</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">我的收藏</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+      <ul class="nav flex-column">
+        <span class="badge badge-primary">首页</span>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">最近更改</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">联系我们</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+        </li>
+      </ul>
+    </div>
+    <div id="right" class="col-md-11">
+      <!-- 右侧顶部导航栏 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="#">帮助</a></li>
+        <form th:action="@{/search}" method="get" class="navbar-form navbar-left pull-right">
+          <input id="pokename" name="pokename" type="text" class="form-control" placeholder="搜索Poke百科" />
+          <button type="submit" class="btn btn-default">
+            <span>搜索</span>
+          </button>
+        </form>
+      </ul>
+      <!-- 标题, 用于显示当前是哪个板块 -->
+      <div id="title" class="col-md-12">
+        <h1>帮助</h1>
+      </div>
+      <div class="row" id="right-content">
+        <div class="col-md-6 col-md-offset-3" style="padding-top: 30px">
+          <!-- 具体内容 -->
+          <h1>
+            <b> 这里是帮助页面 </b>
+          </h1>
+          <br />
+          <br />
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h1 class="panel-title"><strong>首页</strong></h1>
+            </div>
+            <div class="panel-body">
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-success">
+                  宝可梦: 展示目前为止所有的精灵图鉴
+                </li>
+                <li class="list-group-item list-group-item-info">
+                  招式: 对每个招式做说明
+                </li>
+                <li class="list-group-item list-group-item-warning">
+                  特性: 对每个特性作说明
+                </li>
+                <li class="list-group-item list-group-item-danger">
+                  其余界面: 功能未完善
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h1 class="panel-title"><strong>论坛 (讨论)</strong></h1>
+            </div>
+            <div class="panel-body">
+              在该页面你可以与不同的用户进行讨论, 也可以在对应的专题区域进行发帖
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      /* 宽度包含内边距padding */
+      box-sizing: border-box;
+      background-color: #f4f4f4;
+    }
+    .top-header {
+      height: 80px;
+      line-height: 55px;
+      text-align: right;
+      font-size: 18px;
+      padding-right: 15px;
+      border-bottom: 3px gray solid;
+    }
+    .top-header .col-md-11 {
+      height: 80px;
+    }
+    .top-header .col-md-11 a {
+      width: 85px;
+      margin-left: 25px;
+    }
+    .top-header .col-md-11 a:last-child {
+      width: 110px;
+    }
+    #title {
+      margin-left: 15px;
+      border-bottom: 3px #000 solid;
+    }
+    #right-content {
+      border-left: 1px skyblue solid;
+      margin-top: 105px;
+      margin-left: 15px;
+    }
+  </style>
+</html>

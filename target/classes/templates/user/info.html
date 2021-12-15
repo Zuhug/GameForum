@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+  <link
+          rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+          crossorigin="anonymous"
+  />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script
+          src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+          integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+          crossorigin="anonymous"
+  ></script>
+  <title>Poke百科</title>
+</head>
+
+<body>
+<!-- 头部 -->
+<div class="top-header">
+  <div class="row">
+    <div class="col-md-1">
+      <a th:href="@{/user/index}">
+        <img th:src="@{/imgs/p1.jpg}" class="img-circle"/>
+      </a>
+    </div>
+    <div class="col-md-11" style="margin-top: 10px">
+      <div class="row">
+        <div class="col-md-1 col-md-offset-10" style="text-align: center">
+          <div style="float: left">
+            <img width="60px" height="60px" th:src="@{${session.loginAccount.user.imgUrl}}" alt="" class="img-circle">
+          </div>
+          <div class="info">
+            <a th:href="@{/user/info}">
+              <p><b style="color: #0088cc; font-size: 20px" th:text="${session.loginAccount.user.username}"></b></p>
+            </a>
+            <p><b style="font-size: 14px" th:text="${session.loginAccount.email}"></b></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 左边导航栏 -->
+<div id="left" class="col-md-1">
+  <ul class="nav flex-column">
+    <span class="badge badge-primary">首页</span>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">最近更改</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/contact}">联系我们</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+    </li>
+  </ul>
+  <ul class="nav flex-column">
+    <span class="badge badge-primary">快捷菜单</span>
+    <li class="nav-item">
+      <a class="nav-link active" th:href="@{/poke-dex}">宝可梦</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">招式</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">特性</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+    </li>
+  </ul>
+  <ul class="nav flex-column">
+    <span class="badge badge-primary">我的</span>
+    <li class="nav-item">
+      <a class="nav-link active" th:href="@{/user/info}">我的主页</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">我的收藏</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/contact}">联系我们</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+    </li>
+  </ul>
+  <ul class="nav flex-column">
+    <span class="badge badge-primary">首页</span>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">最近更改</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/user/toTopic}">专题论坛</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/contact}">联系我们</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" th:href="@{/help}">帮助</a>
+    </li>
+  </ul>
+</div>
+<div id="right" class="col-md-11">
+  <div id="title1" class="col-md-12">
+    <h1>个人信息</h1>
+  </div>
+  <div class="row">
+    <div class="row" id="right-content">
+      <div class="col-md-12">
+        <ul id="myTab" class="nav nav-tabs" style="margin-top: 20px">
+          <li class="active">
+            <a href="#pokemon" data-toggle="tab"> <p th:text="${session.loginAccount.user.username}"></p> </a>
+          </li>
+          <li><a href="#my-fa-tie" data-toggle="tab"> 我的发帖 </a></li>
+          <li><a href="#setting" data-toggle="tab"> 设置 </a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+          <!-- 用户个人信息 -->
+          <div class="tab-pane fade in active" id="pokemon">
+            <div class="col-md-6" style="border: 1px red solid; margin-top: 40px; font-size: 16px;">
+              <div style="padding-top: 25px">
+                <img style="margin-bottom: 20px;" width="150px" height="150px" th:src="@{${session.loginAccount.user.imgUrl}}" alt="" class="img-rounded">
+                <div class="well well-sm"><p th:text="|身份: ${session.loginAccount.user.role.descri}|"></p></div>
+                <div class="well well-sm"><p th:text="|账号: ${session.loginAccount.email}|"></p></div>
+                <div class="well well-sm"><p th:text="|年龄: ${session.loginAccount.user.age}|"></p></div>
+                <div class="well well-sm"><p th:text="|密码: ${session.loginAccount.password}|"></p></div>
+                <div class="well well-sm"><p th:text="|地址: ${session.loginAccount.user.addr}|"></p></div>
+                <div class="well well-sm"><p th:text="|电话: ${session.loginAccount.user.tel}|"></p></div>
+              </div>
+            </div>
+          </div>
+          <!-- 用户的所有发帖 -->
+          <div class="tab-pane fade" id="my-fa-tie">
+            <div class="col-md-8 col-md-offset-2" style="margin-top: 45px;">
+              <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myLabel1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myLabel1">编辑</h4>
+                    </div>
+                    <div class="modal-body">
+                      <form th:action="@{/update}" method="post">
+                        <input type="hidden" value="PUT" name="_method">
+                        <input type="hidden" id="numbers" name="numbers" />
+                        <div class="form-group">
+                          <label>标题</label>
+                          <input id="title" name="title" type="text" class="form-control" />
+                        </div>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        <button id="editBtn" type="submit button" class="btn btn-success">提交更改</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="del" tabindex="-1" role="dialog" aria-labelledby="myLabel2" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myLabel2">删除</h4>
+                    </div>
+                    <div class="modal-body">
+                      确认删除?
+                    </div>
+                    <div class="modal-footer">
+                      <form th:action="@{/delete}" method="post">
+                        <input type="hidden" value="DELETE" name="_method">
+                        <input type="hidden" id="aid" name="aid" />
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"> 取消 </button>
+                        <button type="submit button" class="btn btn-danger"> 确认删除 </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div id="tableDiv">
+                <div th:replace="~{component1::tableDiv}"></div>
+              </div>
+            </div>
+          </div>
+          <!-- 用户设置界面 -->
+          <div class="tab-pane fade" id="setting">
+            <div class="modal fade" id="quit" tabindex="-1" role="dialog" aria-labelledby="myLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myLabel">注销</h4>
+                  </div>
+                  <div class="modal-body">
+                    确认退出?
+                  </div>
+                  <div class="modal-footer">
+                    <form th:action="@{/logout}" method="post">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal"> 取消 </button>
+                      <button type="button submit" class="btn btn-danger"> 确认 </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-8 col-md-offset-2" style="margin-top: 45px;" >
+              <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#quit"> 退出登录 </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+<script th:inline="javascript">
+
+  let title = ''
+
+  function refresh(data) {
+    const uid = /*[[${session.loginAccount.uid}]]*/{}
+    let page_num = data.text
+    const url = '/user/getAllArticalsByUid2/' + uid + '/' + page_num
+    $('#tableDiv').load(url)
+  }
+
+  $('#edit').on('show.bs.modal', function (event) {
+    let button = $(event.relatedTarget) // Button that triggered the modal
+    let numbers = button.data('whatever') // Extract info from data-* attributes
+    let modal = $(this)
+    modal.find('#numbers').val(numbers)
+  })
+
+  $('#del').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var aid = button.data('whatever') // Extract info from data-* attributes
+    var modal = $(this)
+    modal.find('#aid').val(aid)
+  })
+
+</script>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    /* 宽度包含内边距padding */
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+  }
+  .top-header {
+    height: 80px;
+    line-height: 55px;
+    text-align: right;
+    font-size: 18px;
+    padding-right: 15px;
+    border-bottom: 3px gray solid;
+  }
+  .info{
+    width: 150px;
+    line-height: 10px;
+    margin-left: 70px;
+    margin-top: 16px;
+    text-align: left;
+  }
+  .top-header .col-md-11 {
+    height: 80px;
+  }
+  .top-header .col-md-11 a {
+    width: 85px;
+    margin-left: 25px;
+  }
+  .top-header .col-md-11 a:last-child {
+    width: 110px;
+  }
+  #left ul {
+    padding-top: 10px;
+  }
+  #right {
+    margin-bottom: 55px;
+  }
+  #right #title1 {
+    margin-left: 15px;
+    border-bottom: 3px #000 solid;
+  }
+</style>
+</html>
