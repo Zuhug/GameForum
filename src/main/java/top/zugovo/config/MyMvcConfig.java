@@ -46,8 +46,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor())
-                // 对/user/ 下的资源进行拦截
-                .addPathPatterns("/user/**")
+                // 对/user/, /admin/ 下的资源进行拦截
+                .addPathPatterns("/user/**", "/admin/**")
                 // 静态资源放行
                 .excludePathPatterns("/css/**", "/js/**", "/imgs/**");
     }
