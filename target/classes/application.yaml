@@ -9,13 +9,12 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
   datasource:
-    username: zug
-    password: zug123
+    username: root
+    password: 3050494918
     url: jdbc:mysql://localhost:3306/game_forum_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-
-    # druid专有属性
+    # druid配置
     druid:
       # 初始化大小，最小，最大
       initial-size: 5
@@ -33,7 +32,6 @@ spring:
       test-on-return: false
       # 打开 PSCache，并且指定每个连接上 PSCache 的大小
       pool-prepared-statements: true
-
       # 配置监控统计拦截的filters, stat: 监控统计, log4j: 日志记录, wall: 防御sql注入
       # 如果允许时报错 java.lang.ClassNotFoundException: org.apache.log4j.Priority
       # 则导入 log4j依赖即可
@@ -47,7 +45,6 @@ spring:
         enabled: true
         login-username: admin
         login-password: admin
-        # allow: 允许谁能访问
   thymeleaf:
     cache: false
   jackson:

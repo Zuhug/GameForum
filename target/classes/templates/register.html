@@ -128,6 +128,7 @@
         <div class="col-md-6">
           <!-- 注册表单 -->
           <form style="margin-top: 30px" th:action="@{/register}" method="post" enctype="multipart/form-data">
+            <input type="hidden" value="PUT" name="_method">
             <div class="form-group">
               <label >用户名(必需)</label>
               <input

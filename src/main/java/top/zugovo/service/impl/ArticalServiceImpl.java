@@ -88,6 +88,7 @@ public class ArticalServiceImpl implements ArticalService {
         return articalPage;
     }
 
+    @Override
     public void saveArtical(Artical artical) {
         articalMapper.saveArtical(artical);
     }

@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- 用户页面中'我的发帖'中的表格 -->
 <div th:fragment="tableDiv">
     <table th:if="${session.articalPageResult.pages != 0}" class="table table-bordered" style="font-size: 18px;">
@@ -16,7 +18,7 @@
             <td th:text="${result.title}"></td>
             <td th:text="${#dates.format(result.publishTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             <td>
-<!--                <button th:data-whatever="${Item.index + (session.articalPageResult.pageNum - 1) * 5}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit"> 编辑 </button>-->
+                <!--                <button th:data-whatever="${Item.index + (session.articalPageResult.pageNum - 1) * 5}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit"> 编辑 </button>-->
                 <button th:data-whatever="${Item.index}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit"> 编辑 </button>
                 <button th:data-whatever="${Item.index}" type="button" class="btn btn-danger"  data-toggle="modal" data-target="#del"> 删除 </button>
             </td>
@@ -32,3 +34,41 @@
         </ul>
     </nav>
 </div>
+
+<div th:fragment="detail-display">
+    <!-- 帖子 -->
+    <div class="media" th:each="artical, Item: ${session.articals.rows}">
+        <div class="media-left">
+            <!-- 作者的头像和名字 -->
+            <a th:href="@{'/user/article-detail/' + ${Item.index} + '/1'}">
+                <img width="80px" height="80px" class="media-object" th:src="@{${artical.authorImg}}" alt="...">
+                <h4><strong th:text="${artical.authorName}"></strong></h4>
+            </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading" th:text="${artical.title}"></h4>
+            <h5 th:text="|板块: ${session.topic.plate.pname}|"></h5>
+            <h5 th:text="|讨论区: ${session.topic.name}|"></h5>
+            <p th:text="|创建时间: ${artical.publishTime}|"></p>
+        </div>
+    </div>
+    <!-- 页码 -->
+    <nav th:if="${session.articals.pages != 0}" aria-label="Page navigation">
+        <ul class="pagination">
+            <li th:class="${(session.articals.firstPage) ? ('disabled') : ('')}">
+                <a th:href="@{'/user/topic/'+${session.topic.id}+'/'+${session.articals.pageNum - 1}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:class="${(session.articals.pageNum == index) ? ('active') : ('')}" th:each="index : ${#numbers.sequence(1, session.articals.pages)}">
+                <a th:text="${index}" th:href="@{'/user/topic/'+${session.topic.id}+'/'+${index}}" ></a>
+            </li>
+            <li th:class="${(session.articals.lastPage) ? ('disabled') : ('')}">
+                <a th:href="@{'/user/topic/'+${session.topic.id}+'/'+${session.articals.pageNum + 1}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</html>

@@ -37,10 +37,11 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/error/404").setViewName("error/404");
     }
 
-    // /img/header/** 从/home/zug/workspace/images/headers/** 获取资源
+    // /img/header/** 从C:/Users/headers/** 获取资源
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/img/header/**").addResourceLocations("file:/home/zug/workspace/images/headers/");
+        registry.addResourceHandler("/img/header/**")
+                .addResourceLocations("file:F:/Root/images/head/");
     }
 
     @Override

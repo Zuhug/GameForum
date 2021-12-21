@@ -62,7 +62,7 @@ public class ArticalController {
      * @param session: 获取是当前登录的用户(user), 当前板块(plate), 当前讨论区(topic)信息
      * @return
      */
-    @PostMapping("/user/publish-artical")
+    @PutMapping("/user/publish-artical")
     public String publishArtical( String myTitle, String content, HttpSession session) {
         // 获取当前登录的用户
         Account loginAccount = (Account) session.getAttribute("loginAccount");
@@ -118,14 +118,14 @@ public class ArticalController {
      * @param numbers: 在当前保存的所有artical的下标
      * @return
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
     public String updateArtical(HttpSession session, String title, Integer numbers) {
         Account account = (Account) session.getAttribute("loginAccount");
         PageResult<Artical> articals = (PageResult<Artical>) session.getAttribute("articalPageResult");
         Artical artical = articals.getRows().get(numbers);
         artical.setTitle(title);
         articalService.updateArtical(artical);
-        return "redirect:/user/getAllArticalsByUid1/" + account.getUid() + "/1";
+        return "redirect:/user/getAllArticalsByUid/" + account.getUid() + "/1";
     }
 
     /**
@@ -140,7 +140,7 @@ public class ArticalController {
         PageResult<Artical> articalPageResult = (PageResult<Artical>) session.getAttribute("articalPageResult");
         Artical artical = articalPageResult.getRows().get(aid);
         userService.deleteArtical(artical.getId());
-        return "redirect:/user/getAllArticalsByUid1/" + account.getUid() + "/1";
+        return "redirect:/user/getAllArticalsByUid/" + account.getUid() + "/1";
     }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import top.zugovo.entity.Account;
 import top.zugovo.entity.Comment;
 import top.zugovo.entity.vo.ArticalVO;
@@ -61,7 +62,7 @@ public class CommentController {
      * @param session: 用于获取当前板块, 当前帖子信息
      * @return
      */
-    @PostMapping("/user/publish-comment")
+    @PutMapping("/user/publish-comment")
     public String comment(String content, HttpSession session) {
 
         // 拿到账户信息

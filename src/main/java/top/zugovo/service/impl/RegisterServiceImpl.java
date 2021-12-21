@@ -47,14 +47,13 @@ public class RegisterServiceImpl implements RegisterService {
      * 将用户头像保存在本地的某个地址
      * @param imgUpload 用户上传的头像
      * @param suffix 头像图片后缀
-     * @param filename 文件名
      * @return fileStr: 该文件访问的路径
      * @throws IOException
      */
-    public String saveImg2Local(MultipartFile imgUpload, String suffix, String filename) throws IOException {
+    public String saveImg2Local(MultipartFile imgUpload, String suffix) throws IOException {
         byte[] bs = imgUpload.getBytes();
         // 防止用户上传的头像名字重复
-        filename = UUID.randomUUID() + suffix;
+        String filename = UUID.randomUUID() + suffix;
         // 保存的真实地址
         String fileStr = uploadDir + filename;
         File file = new File(fileStr);
@@ -105,7 +104,7 @@ public class RegisterServiceImpl implements RegisterService {
                 dir.mkdir();
             }
             try {
-                fileStr = saveImg2Local(imgUpload, suffix, filename);
+                fileStr = saveImg2Local(imgUpload, suffix);
             } catch (Exception e) {
                 e.printStackTrace();
             }
